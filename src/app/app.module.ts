@@ -12,6 +12,7 @@ import { FlightsViewComponent } from './admin-view/flights-view/flights-view.com
 import { AirportsViewComponent } from './admin-view/airports-view/airports-view.component';
 import { AirplanesViewComponent } from './admin-view/airplanes-view/airplanes-view.component';
 import { RoutesViewComponent } from './admin-view/routes-view/routes-view.component';
+import { SidebarComponent } from './admin-view/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { RoutesViewComponent } from './admin-view/routes-view/routes-view.compon
     FlightsViewComponent,
     AirportsViewComponent,
     AirplanesViewComponent,
-    RoutesViewComponent
+    RoutesViewComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
