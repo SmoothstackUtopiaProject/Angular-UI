@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
 
   userEmail!: string;
   userPassword!: string;
+  errorMessage!: string;
 
   constructor(private router: Router, private auth: AuthenticationService) { }
 
@@ -22,10 +23,10 @@ export class LoginComponent implements OnInit {
     this.auth.login(this.userEmail, this.userPassword)
     .subscribe(
       data=>{
-        console.log(data)
+        this.router.navigate(['dashboard']);
       },
       error => {
-        console.log(error)
+        this.errorMessage = "Invalid email or password";
       }
     )
   }

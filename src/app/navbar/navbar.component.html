@@ -5,7 +5,14 @@
             </a></div>
 
         <ul class="navbar-nav navbar-collapse justify-content-end">
-            <li><a class="nav-link">Logout</a></li>
+
+            <div class="d-flex justify-content-between">
+
+                <li>
+                    <h3>Hi, {{userName}}</h3>
+                </li>
+                <button (click)=onLogout() class="btn btn-warning">Logout</button>
+            </div>
         </ul>
     </nav>
 </header>

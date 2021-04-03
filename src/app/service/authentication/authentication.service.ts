@@ -25,12 +25,11 @@ export class AuthenticationService {
       Authorization: basicAuthHeaderString
     });
 
-    return this.http.get<any>(`${API_URL}/login`, {headers})
+    return this.http.get<User>(`${API_URL}/login`, {headers})
     .pipe(
       map(
         data=>{
-          console.log(data)
-          sessionStorage.setItem(AUTHENTICATED_USER, userEmail);
+          sessionStorage.setItem(AUTHENTICATED_USER, data.userFirstName);
           sessionStorage.setItem(TOKEN, basicAuthHeaderString);
           return data;
         }

@@ -11,6 +11,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AuthenticationService } from './service/authentication/authentication.service';
 import { HttpIntercepterService } from './service/http/http-intercepter.service';
+import { LoadingComponent } from './shared/loading/loading.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { HttpIntercepterService } from './service/http/http-intercepter.service'
     AppComponent,
     LoginComponent,
     DashboardComponent,
-    NavbarComponent
+    NavbarComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
