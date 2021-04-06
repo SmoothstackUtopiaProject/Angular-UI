@@ -1,0 +1,25 @@
+.loading {
+  width: 50px;
+  height: 40px;
+  margin: 40px auto;
+  color: red;
+}
+
+.loading--plane {
+  width: 180px;
+  stroke-dasharray: 425.59;
+  stroke-dashoffset: 425.59;
+  animation: plane-loading-animation 4s linear infinite;
+}
+
+@keyframes plane-loading-animation {
+  50% {
+    stroke-dashoffset: 225.59;
+  }
+  50% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -425.59;
+  }
+}
