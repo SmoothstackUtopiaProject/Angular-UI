@@ -11,7 +11,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'dashboard', component: DashboardComponent},
   {path: 'navbar', component: NavbarComponent},
-  {path: 'admin', component: AdminViewComponent}
+  {path: 'admin', component: AdminViewComponent},
   {path: 'loading', component: LoadingComponent},
 
 ];

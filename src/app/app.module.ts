@@ -30,7 +30,7 @@ import { LoadingComponent } from './shared/loading/loading.component';
     AirportsViewComponent,
     AirplanesViewComponent,
     RoutesViewComponent,
-    SidebarComponent
+    SidebarComponent,
     LoadingComponent
   ],
   imports: [
