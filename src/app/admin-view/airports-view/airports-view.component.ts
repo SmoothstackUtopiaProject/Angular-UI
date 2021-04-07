@@ -1,5 +1,4 @@
-import { Component, OnInit, ElementRef, HostListener, AfterViewInit, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { MdbTableDirective, MdbTablePaginationComponent } from 'ng-uikit-pro-standard';
+import { Component, OnInit } from '@angular/core';
 import { Airport } from 'src/app/model/airport';
 import { AirportsService } from 'src/app/service/airports/airports.service';
 
@@ -8,43 +7,18 @@ import { AirportsService } from 'src/app/service/airports/airports.service';
   templateUrl: './airports-view.component.html',
   styleUrls: ['./airports-view.component.css']
 })
-export class AirportsViewComponent implements OnInit, AfterViewInit {
+export class AirportsViewComponent implements OnInit {
 
-  @ViewChild(MdbTableDirective, { static: true })
-  mdbTable!: MdbTableDirective;
-  @ViewChild(MdbTablePaginationComponent, { static: true })
-  mdbTablePagination!: MdbTablePaginationComponent;
-  @ViewChild('row', { static: true })
-  row!: ElementRef;
+  airportList: Airport[] =[];
 
-  elements: any = [];
-  airportList!: Airport[];
-  headElements!: ['IATA', 'Name', 'City'];
-
-  searchText: string = '';
-  previos! : string;
-
-  maxVisibleItems: number = 8;
+  constructor(private airportService: AirportsService) { }
 
 
-  constructor(private airportService: AirportsService, private cdRef: ChangeDetectorRef) { }
-
-  @HostListener('input') oninput(){
-    this.mdbTablePagination.searchText = this.searchText;
-  }
-
-  ngOnInit(): void {
+  ngOnInit() {
     this.getAllAirports();
-    for(let i = 0; i<= this.getAllAirports.length; i++){
-      this.elements.push({
-      })
-    }
+  
   }
 
-
-  ngAfterViewInit(): void {
-    throw new Error('Method not implemented.');
-  }
 
   getAllAirports(){
     this.airportService.getAllAirports().subscribe(
@@ -54,5 +28,7 @@ export class AirportsViewComponent implements OnInit, AfterViewInit {
       }
     )
   }
+
+
 
 }

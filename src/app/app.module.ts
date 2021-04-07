@@ -17,6 +17,8 @@ import { SidebarComponent } from './admin-view/sidebar/sidebar.component';
 import { AuthenticationService } from './service/authentication/authentication.service';
 import { HttpIntercepterService } from './service/http/http-intercepter.service';
 import { LoadingComponent } from './shared/loading/loading.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { WavesModule } from 'ng-uikit-pro-standard';
 
 @NgModule({
   declarations: [
@@ -29,13 +31,15 @@ import { LoadingComponent } from './shared/loading/loading.component';
     AirplanesViewComponent,
     RoutesViewComponent,
     SidebarComponent,
-    LoadingComponent
+    LoadingComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    WavesModule
   ],
   providers: [
     // {provide: HTTP_INTERCEPTORS, useClass: HttpIntercepterService, multi: true}
