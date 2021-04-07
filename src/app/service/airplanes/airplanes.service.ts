@@ -11,6 +11,6 @@ export class AirplanesService {
   constructor(private http: HttpClient) { }
 
   getAllAirplanes(){
-    return this.http.get<Airplane[]>('http://localhost:8082/airplanes')
+    return this.http.get<Airplane[]>('http://localhost:8081/airplanes')
   }
 }
