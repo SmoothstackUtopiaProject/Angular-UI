@@ -1,14 +1,15 @@
+<app-navbar></app-navbar>
+
 <body>
   <div class="wrapper d-flex align-items-stretch">
     <nav id="sidebar">
       <div class="p-4 pt-5 text-center">
-        <h1 id="utopia-head" class="mb-5">Utopia</h1>
         <ul class="list-unstyled mb-5">
           <li class="active">
             <a href="#">Airplanes</a>
           </li>
           <li>
-            <a href="#">Airports</a>
+            <button (click)=displayAirports()>Airports</button>
           </li>
           <li>
             <a href="#">Bookings</a>
@@ -23,13 +24,18 @@
             <a href="#">Users</a>
           </li>
         </ul>
-        
+
       </div>
     </nav>
 
     <div id="content" class="p-4 p-md-5">
-    <!--COMPONENTS HERE-->
-      
+      <!--COMPONENTS HERE-->
+
+      <div *ngIf="airportsView">
+        <app-airports-view></app-airports-view>
+
+      </div>
+
     </div>
   </div>
 </body>

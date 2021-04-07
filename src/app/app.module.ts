@@ -7,7 +7,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AdminViewComponent } from './admin-view/admin-view.component';
 import { FlightsViewComponent } from './admin-view/flights-view/flights-view.component';
@@ -23,14 +22,13 @@ import { LoadingComponent } from './shared/loading/loading.component';
   declarations: [
     AppComponent,
     LoginComponent,
-    DashboardComponent,
     NavbarComponent,
     AdminViewComponent,
     FlightsViewComponent,
     AirportsViewComponent,
     AirplanesViewComponent,
     RoutesViewComponent,
-    SidebarComponent
+    SidebarComponent,
     LoadingComponent
   ],
   imports: [
@@ -40,7 +38,7 @@ import { LoadingComponent } from './shared/loading/loading.component';
     HttpClientModule
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: HttpIntercepterService, multi: true}
+    // {provide: HTTP_INTERCEPTORS, useClass: HttpIntercepterService, multi: true}
   ],
   bootstrap: [AppComponent]
 })

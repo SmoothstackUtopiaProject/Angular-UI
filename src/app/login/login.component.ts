@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
     this.auth.login(this.userEmail, this.userPassword)
     .subscribe(
       data=>{
-        this.router.navigate(['dashboard']);
+        this.router.navigate(['admin']);
       },
       error => {
         this.errorMessage = "Invalid email or password";

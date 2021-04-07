@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminViewComponent implements OnInit {
 
+  airportsView = false;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  displayAirports(){
+    this.airportsView = true;
   }
 
 }
