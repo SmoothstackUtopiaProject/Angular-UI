@@ -24,11 +24,9 @@ export class AirportsViewComponent implements OnInit {
     this.airportService.getAllAirports().subscribe(
       response => {
         this.airportList = response;
+        console.log(response)
         return response;
       }
     )
   }
-
-
-
 }
