@@ -7,15 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminViewComponent implements OnInit {
 
-  airportsView = false;
+  airports = "AIRPORTS";
+  airplanes = "AIRPLANES";
+  currentView = "AIRPLANES";
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  displayAirports(){
-    this.airportsView = true;
+  displayView(selected: string) {
+    this.currentView = selected;
   }
 
 }

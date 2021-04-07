@@ -5,11 +5,11 @@
     <nav id="sidebar">
       <div class="p-4 pt-5 text-center">
         <ul class="list-unstyled mb-5">
-          <li class="active">
-            <a href="#">Airplanes</a>
+          <li>
+            <a (click)=displayView(airplanes) >Airplanes</a>
           </li>
           <li>
-            <button (click)=displayAirports()>Airports</button>
+            <a (click)=displayView(airports) >Airports</a>
           </li>
           <li>
             <a href="#">Bookings</a>
@@ -31,9 +31,12 @@
     <div id="content" class="p-4 p-md-5">
       <!--COMPONENTS HERE-->
 
-      <div *ngIf="airportsView">
-        <app-airports-view></app-airports-view>
+      <div *ngIf="currentView === 'AIRPLANES'">
+        <app-airplanes-view></app-airplanes-view>
+      </div>
 
+      <div *ngIf="currentView === 'AIRPORTS'">
+        <app-airports-view></app-airports-view>
       </div>
 
     </div>
