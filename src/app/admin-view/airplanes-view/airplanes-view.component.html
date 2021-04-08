@@ -1,1 +1,31 @@
-<p>airplanes-view works!</p>
+<div class="container">
+
+    <div class="row">
+        <button class="btn btn-success">Add</button>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Airplane ID
+                    <button class="btn text-white" (click)="onSortChange('airplaneId')">
+                        ⇅
+                    </button>
+                </th>
+                <th>Type ID
+                    <button class="btn text-white" (click)="onSortChange('airplaneTypeId')">
+                        ⇅
+                    </button>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let airplane of airplaneList">
+                <td>{{airplane.airplaneId}}</td>
+                <td>{{airplane.airplaneTypeId}}</td>
+                <td><button class="btn btn-success">Update</button></td>
+                <td><button class="btn btn-warning">Delete</button></td>
+            </tr>
+        </tbody>
+
+    </table>
+</div>
