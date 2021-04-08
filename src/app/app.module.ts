@@ -18,7 +18,8 @@ import { AuthenticationService } from './service/authentication/authentication.s
 import { HttpIntercepterService } from './service/http/http-intercepter.service';
 import { LoadingComponent } from './shared/loading/loading.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { WavesModule } from 'ng-uikit-pro-standard';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,9 @@ import { WavesModule } from 'ng-uikit-pro-standard';
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    WavesModule
+    ReactiveFormsModule,
+    NgbModule
+
   ],
   providers: [
     // {provide: HTTP_INTERCEPTORS, useClass: HttpIntercepterService, multi: true}
