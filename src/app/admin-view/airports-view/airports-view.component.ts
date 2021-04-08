@@ -11,20 +11,27 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AirportsViewComponent implements OnInit {
 
+  airport!: Airport;
   airportList: Airport[] =[];
-  title = 'modal2';
-  editProfileForm!: FormGroup;
+  editFormAirport!: FormGroup;
+  createFormAirport!: FormGroup;
 
   constructor(private airportService: AirportsService, private fb: FormBuilder, private modalService: NgbModal) { }
 
 
   ngOnInit() {
     this.getAllAirports();
-    this.editProfileForm = this.fb.group({
+    this.editFormAirport = this.fb.group({
       airportIataId: [''],
       airportName: [''],
       airportCityName: ['']
     });
+    this.createFormAirport = this.fb.group({
+      airportIataId: [''],
+      airportName: [''],
+      airportCityName: ['']
+    });
+
   }
 
 
@@ -44,15 +51,33 @@ export class AirportsViewComponent implements OnInit {
      backdrop: 'static'
     });
    
-    this.editProfileForm.patchValue({
+    this.editFormAirport.patchValue({
+      airportIataId: airport.airportIataId,
+      airportName: airport.airportName,
+      airportCityName: airport.airportCityName
+    });
+
+    this.createFormAirport.patchValue({
       airportIataId: airport.airportIataId,
       airportName: airport.airportName,
       airportCityName: airport.airportCityName
     });
    }
 
-   onSubmit() {
-    // this.modalService.dismissAll();
-    console.log("res:", this.editProfileForm.getRawValue());
+   onSubmitUpdate() {
+    this.modalService.dismissAll();
+    console.log("res:", this.editFormAirport.getRawValue());
+   }
+
+   onSubmitCreate(){
+    this.airportService.createAirport(this.createFormAirport.getRawValue()).subscribe(
+      data=>{
+        this.getAllAirports();
+        this.modalService.dismissAll();
+        console.log(data)
+      }, error => {
+        console.log(error)
+      }
+    )
    }
 }
