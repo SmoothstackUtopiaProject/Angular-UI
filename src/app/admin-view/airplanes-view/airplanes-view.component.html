@@ -1,18 +1,18 @@
 <div class="container">
 
     <div class="row">
-        <button class="btn btn-success">Add</button>
+        <button (click)="openModal(createModal, airplane)" class="btn btn-success">Add</button>
     </div>
     <table class="table">
         <thead>
             <tr>
                 <th>Airplane ID
-                    <button class="btn text-white" (click)="onSortChange('airplaneId')">
+                    <button class="btn text-black" (click)="onSortChange('airplaneId')">
                         ⇅
                     </button>
                 </th>
                 <th>Type ID
-                    <button class="btn text-white" (click)="onSortChange('airplaneTypeId')">
+                    <button class="btn text-black" (click)="onSortChange('airplaneTypeId')">
                         ⇅
                     </button>
                 </th>
@@ -22,10 +22,90 @@
             <tr *ngFor="let airplane of airplaneList">
                 <td>{{airplane.airplaneId}}</td>
                 <td>{{airplane.airplaneTypeId}}</td>
-                <td><button class="btn btn-success">Update</button></td>
-                <td><button class="btn btn-warning">Delete</button></td>
+                <td><button (click)="openModal(editModal, airplane)" class="btn btn-success">Update</button></td>
+                <td><button (click)="openModal(deleteModal, airplane)" class="btn btn-warning">Delete</button>
             </tr>
         </tbody>
 
     </table>
 </div>
+
+<!--Edit Modal-->
+<ng-template #editModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">Edit Airplane</h5>
+        <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <form [formGroup]="editFormAirplane" (ngSubmit)="onSubmitUpdate()">
+            <div class="form-group row">
+                <label for="firstname" class="col-sm-4 col-form-label">Airplane ID</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" formControlName="airplaneId" id="airplaneId">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="lastname" class="col-sm-4 col-form-label">Airplane Type ID</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" formControlName="airplaneTypeId" id="airplaneName">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<!--Create Modal-->
+<ng-template #createModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="editProfileLabel">Create Airplane</h5>
+        <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <form [formGroup]="createFormAirplane" (ngSubmit)="onSubmitCreate()">
+            <div class="form-group row">
+                <label for="firstname" class="col-sm-4 col-form-label">Airplane ID</label>
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" formControlName="airplaneId" id="airplaneId" placeholder="Auto-Generated" readonly>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="lastname" class="col-sm-4 col-form-label">Airplane Type ID</label>
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" formControlName="airplaneTypeId" id="airplaneTypeId">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<!--Delete Modal-->
+<ng-template #deleteModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="editProfileLabel">Delete Airplane</h5>
+        <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <h3>Are you sure you want to delete Airplane? </h3>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
+            <button type="submit" class="btn btn-primary" (click)="onSubmitDelete()">Yes/Delete</button>
+        </div>
+    </div>
+</ng-template>

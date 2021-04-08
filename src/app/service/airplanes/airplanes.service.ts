@@ -11,6 +11,18 @@ export class AirplanesService {
   constructor(private http: HttpClient) { }
 
   getAllAirplanes(){
-    return this.http.get<Airplane[]>('http://localhost:8081/airplanes')
+    return this.http.get<Airplane[]>(environment.airplanesEndpoint)
+  }
+
+  createAirplane(airplane: Airplane){
+    return this.http.post<Airplane>(environment.airplanesEndpoint, airplane)
+  }
+
+  updateAirplane(airplane: Airplane){
+    return this.http.post<Airplane>(environment.airplanesEndpoint, airplane)
+  }
+
+  deleteAirplane(airplane: Airplane){
+    return this.http.delete(environment.airplanesEndpoint + "/" + airplane.airplaneId)
   }
 }

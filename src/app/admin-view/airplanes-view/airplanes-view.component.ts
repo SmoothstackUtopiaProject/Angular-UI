@@ -1,6 +1,8 @@
 import { AirplanesService } from './../../service/airplanes/airplanes.service';
 import { Airplane } from './../../model/airplane';
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-airplanes-view',
@@ -9,14 +11,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AirplanesViewComponent implements OnInit {
 
+  airplane!: Airplane;
   airplaneList: Airplane[] = [];
+  editFormAirplane!: FormGroup;
+  createFormAirplane!: FormGroup;
+  selectedDelete!: Airplane;
   currentSort = "up";
   sortedItem = "";
 
-  constructor(private airplanesService: AirplanesService) { }
+  constructor(private airplanesService: AirplanesService, private fb: FormBuilder, private modalService: NgbModal) { }
 
   ngOnInit(): void {
     this.getAllAirplanes();
+    this.editFormAirplane = this.fb.group({
+      airplaneId: [''],
+      airplaneTypeId: ['']
+    });
+    this.createFormAirplane = this.fb.group({
+      airplaneId: [''],
+      airplaneTypeId: ['']
+    });
   }
 
   onSortChange = (sortedItem : string) => {
@@ -63,5 +77,55 @@ export class AirplanesViewComponent implements OnInit {
       }
     )
   }
+
+  openModal(targetModal:any, airplane:any) {
+    this.modalService.open(targetModal, {
+     centered: true,
+     backdrop: 'static'
+    });
+   
+    this.editFormAirplane.patchValue({
+      airplaneId: airplane.airplaneId,
+      airplaneTypeId: airplane.airplaneTypeId
+    });
+
+    this.createFormAirplane.patchValue({
+      airplaneId: airplane.airplaneId,
+      airplaneTypeId: airplane.airplaneTypeId
+    });
+
+    this.selectedDelete = airplane;
+   }
+
+   onSubmitUpdate() {
+    this.modalService.dismissAll();
+    console.log("res:", this.editFormAirplane.getRawValue());
+   }
+
+   onSubmitDelete() {
+     console.log(this.selectedDelete);
+    this.airplanesService.deleteAirplane(this.selectedDelete).subscribe(
+      data=>{
+        this.getAllAirplanes();
+        this.modalService.dismissAll();
+        console.log(data)
+      }, error => {
+        console.log(error)
+      }
+    )
+   }
+
+   onSubmitCreate(){
+    this.airplanesService.createAirplane(this.createFormAirplane.getRawValue()).subscribe(
+      data=>{
+        this.getAllAirplanes();
+        this.modalService.dismissAll();
+        this.createFormAirplane.reset();
+        console.log(data)
+      }, error => {
+        console.log(error)
+      }
+    )
+   }
 
 }
