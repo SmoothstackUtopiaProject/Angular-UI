@@ -74,6 +74,7 @@ export class AirportsViewComponent implements OnInit {
       data=>{
         this.getAllAirports();
         this.modalService.dismissAll();
+        this.createFormAirport.reset();
         console.log(data)
       }, error => {
         console.log(error)
