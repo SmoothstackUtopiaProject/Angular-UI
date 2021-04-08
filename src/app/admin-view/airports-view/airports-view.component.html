@@ -1,7 +1,7 @@
 <div class="container">
 
     <div class="row">
-        <button class="btn btn-success">Add</button>
+        <button (click)="openModal(createModal, airport)" class="btn btn-success">Add</button>
     </div>
     <table class="table">
         <thead>
@@ -17,8 +17,8 @@
                 <td>{{airport.airportIataId}}</td>
                 <td>{{airport.airportName}}</td>
                 <td>{{airport.airportCityName}}</td>
-                <td><button (click)="openModal(editProfileModal, airport)" class="btn btn-success">Update</button></td>
-                <td><button (click)="openModal(deleteAirportModal, airport)" class="btn btn-warning">Delete</button>
+                <td><button (click)="openModal(editModal, airport)" class="btn btn-success">Update</button></td>
+                <td><button (click)="openModal(deleteModal, airport)" class="btn btn-warning">Delete</button>
                 </td>
             </tr>
             <!-- } -->
@@ -27,16 +27,16 @@
     </table>
 </div>
 
-<ng-template #editProfileModal let-modal>
+<ng-template #editModal let-modal>
     <div class="modal-header">
-        <h5 class="modal-title" id="editProfileLabel">Edit Profile</h5>
+        <h5 class="modal-title">Edit Profile</h5>
         <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
 
     <div class="modal-body">
-        <form [formGroup]="editProfileForm" (ngSubmit)="onSubmit()">
+        <form [formGroup]="editFormAirport" (ngSubmit)="onSubmitUpdate()">
             <div class="form-group row">
                 <label for="firstname" class="col-sm-4 col-form-label">IATA ID</label>
                 <div class="col-sm-8">
@@ -64,7 +64,46 @@
 </ng-template>
 
 
-<ng-template #deleteAirportModal let-modal>
+<ng-template #createModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="editProfileLabel">Create Airport</h5>
+        <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <form [formGroup]="createFormAirport" (ngSubmit)="onSubmitCreate()">
+            <div class="form-group row">
+                <label for="firstname" class="col-sm-4 col-form-label">IATA ID</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" formControlName="airportIataId" id="airportIataId">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="lastname" class="col-sm-4 col-form-label">Name</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" formControlName="airportName" id="airportName">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="username" class="col-sm-4 col-form-label">City</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" formControlName="airportCityName" id="airportCityName">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+
+
+
+<ng-template #deleteModal let-modal>
     <div class="modal-header">
         <h5 class="modal-title" id="editProfileLabel">Delete Airport</h5>
         <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">

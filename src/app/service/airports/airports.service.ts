@@ -11,6 +11,10 @@ export class AirportsService {
   constructor(private http: HttpClient) { }
 
   getAllAirports(){
-    return this.http.get<Airport[]>('http://localhost:8082/airports')
+    return this.http.get<Airport[]>(environment.airportsEndpoint)
   }
+  createAirport(airport: Airport){
+    return this.http.post<Airport>(environment.airportsEndpoint, airport)
+  }
+  
 }
