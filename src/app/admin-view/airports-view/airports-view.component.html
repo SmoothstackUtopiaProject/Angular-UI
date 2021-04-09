@@ -1,14 +1,26 @@
 <div class="container">
 
     <div class="row">
-        <button (click)="openModal(createModal, airport)" class="btn btn-success">Add</button>
+        <button (click)="openCreateModal(createModal, airport)" class="btn btn-success">Add</button>
     </div>
     <table class="table">
         <thead>
             <tr>
-                <th>IATA ID</th>
-                <th>Name</th>
-                <th>City</th>
+                <th>IATA ID
+                    <button class="btn text-black" (click)="onSortChange('airportIataId')">
+                        ⇅
+                    </button>
+                </th>
+                <th>Name
+                    <button class="btn text-black" (click)="onSortChange('airportName')">
+                        ⇅
+                    </button>
+                </th>
+                <th>City
+                    <button class="btn text-black" (click)="onSortChange('airportCityName')">
+                        ⇅
+                    </button>
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -17,8 +29,8 @@
                 <td>{{airport.airportIataId}}</td>
                 <td>{{airport.airportName}}</td>
                 <td>{{airport.airportCityName}}</td>
-                <td><button (click)="openModal(editModal, airport)" class="btn btn-success">Update</button></td>
-                <td><button (click)="openModal(deleteModal, airport)" class="btn btn-warning">Delete</button>
+                <td><button (click)="openEditModal(editModal, airport)" class="btn btn-success">Update</button></td>
+                <td><button (click)="openDeleteModal(deleteModal, airport)" class="btn btn-warning">Delete</button>
                 </td>
             </tr>
             <!-- } -->
@@ -40,7 +52,7 @@
             <div class="form-group row">
                 <label for="firstname" class="col-sm-4 col-form-label">IATA ID</label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" formControlName="airportIataId" id="airportIataId">
+                    <input type="text" class="form-control" formControlName="airportIataId" id="airportIataId" readonly>
                 </div>
             </div>
             <div class="form-group row">
@@ -112,10 +124,10 @@
     </div>
 
     <div class="modal-body">
-        <h3>Are you sure you want to detele Airport? </h3>
+        <h3>Are you sure you want to delete Airport? </h3>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
-            <button type="submit" class="btn btn-primary">Yes/Delete</button>
+            <button type="submit" class="btn btn-primary" (click)="onSubmitDelete()">Yes/Delete</button>
         </div>
     </div>
 </ng-template>

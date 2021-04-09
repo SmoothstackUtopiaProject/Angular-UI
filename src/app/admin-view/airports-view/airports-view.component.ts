@@ -15,9 +15,11 @@ export class AirportsViewComponent implements OnInit {
   airportList: Airport[] =[];
   editFormAirport!: FormGroup;
   createFormAirport!: FormGroup;
+  selectedDelete!: Airport;
+  currentSort = "up";
+  sortedItem = "";
 
   constructor(private airportService: AirportsService, private fb: FormBuilder, private modalService: NgbModal) { }
-
 
   ngOnInit() {
     this.getAllAirports();
@@ -34,6 +36,49 @@ export class AirportsViewComponent implements OnInit {
 
   }
 
+  onSortChange = (sortedItem : string) => {
+    let nextSort;
+
+    if(this.currentSort === "down") nextSort = "up";
+    else nextSort = "down";
+
+    this.currentSort = nextSort;
+    this.sortedItem = sortedItem;
+    this.sortList();
+  }
+
+  sortList() {
+    let airportSorted = this.airportList;
+
+    switch(this.sortedItem) {
+      case "airportIataId":
+        airportSorted.sort((a,b) => {
+          return this.currentSort === "up"
+            ? a.airportIataId.localeCompare(b.airportIataId)
+            : b.airportIataId.localeCompare(a.airportIataId)
+        });
+      break;
+
+      case "airportName":
+        airportSorted.sort((a,b) => {
+          return this.currentSort === "up"
+            ? a.airportName.localeCompare(b.airportName)
+            : b.airportName.localeCompare(a.airportName)
+        });
+      break;
+
+      case "airportCityName":
+        airportSorted.sort((a,b) => {
+          return this.currentSort === "up"
+            ? a.airportCityName.localeCompare(b.airportCityName)
+            : b.airportCityName.localeCompare(a.airportCityName)
+        });
+      break;
+    }
+
+    this.airportList = airportSorted;
+  }
+
 
   getAllAirports(){
     this.airportService.getAllAirports().subscribe(
@@ -45,7 +90,15 @@ export class AirportsViewComponent implements OnInit {
     )
   }
 
-  openModal(targetModal:any, airport:any) {
+  //TODO - GENERALIZE openModal
+  openCreateModal(targetModal:any, airport:any) {
+    this.modalService.open(targetModal, {
+     centered: true,
+     backdrop: 'static'
+    });
+  }
+
+  openEditModal(targetModal:any, airport:any) {
     this.modalService.open(targetModal, {
      centered: true,
      backdrop: 'static'
@@ -56,20 +109,18 @@ export class AirportsViewComponent implements OnInit {
       airportName: airport.airportName,
       airportCityName: airport.airportCityName
     });
+  }
 
-    this.createFormAirport.patchValue({
-      airportIataId: airport.airportIataId,
-      airportName: airport.airportName,
-      airportCityName: airport.airportCityName
+  openDeleteModal(targetModal:any, airport:any) {
+    this.modalService.open(targetModal, {
+     centered: true,
+     backdrop: 'static'
     });
-   }
+  
+    this.selectedDelete = airport;
+  }
 
-   onSubmitUpdate() {
-    this.modalService.dismissAll();
-    console.log("res:", this.editFormAirport.getRawValue());
-   }
-
-   onSubmitCreate(){
+  onSubmitCreate(){
     this.airportService.createAirport(this.createFormAirport.getRawValue()).subscribe(
       data=>{
         this.getAllAirports();
@@ -80,5 +131,30 @@ export class AirportsViewComponent implements OnInit {
         console.log(error)
       }
     )
-   }
+  }
+
+  onSubmitUpdate() {
+    this.airportService.updateAirport(this.editFormAirport.getRawValue()).subscribe(
+      data=>{
+        this.getAllAirports();
+        this.modalService.dismissAll();
+        this.editFormAirport.reset();
+        console.log(data)
+      }, error => {
+        console.log(error)
+      }
+    )
+  }
+  
+  onSubmitDelete() {
+    this.airportService.deleteAirport(this.selectedDelete).subscribe(
+      data=>{
+        this.getAllAirports();
+        this.modalService.dismissAll();
+        console.log(data)
+      }, error => {
+        console.log(error)
+      }
+    )
+  }
 }
