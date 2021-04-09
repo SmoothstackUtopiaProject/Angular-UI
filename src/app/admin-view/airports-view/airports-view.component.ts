@@ -18,6 +18,8 @@ export class AirportsViewComponent implements OnInit {
   selectedDelete!: Airport;
   currentSort = "up";
   sortedItem = "";
+  errorMessage!: '';
+  loading!: boolean;
 
   constructor(private airportService: AirportsService, private fb: FormBuilder, private modalService: NgbModal) { }
 
@@ -81,16 +83,16 @@ export class AirportsViewComponent implements OnInit {
 
 
   getAllAirports(){
+    this.loading = true;
     this.airportService.getAllAirports().subscribe(
       response => {
         this.airportList = response;
-        console.log(response)
+        this.loading = false;
         return response;
       }
     )
   }
 
-  //TODO - GENERALIZE openModal
   openCreateModal(targetModal:any, airport:any) {
     this.modalService.open(targetModal, {
      centered: true,
@@ -128,7 +130,8 @@ export class AirportsViewComponent implements OnInit {
         this.createFormAirport.reset();
         console.log(data)
       }, error => {
-        console.log(error)
+        console.log(error.error.error);
+        this.errorMessage = error.error.error;
       }
     )
   }
