@@ -1,8 +1,9 @@
-<div class="container">
+<div class="container" *ngIf="loading">
+    <app-loading></app-loading>
+</div>
 
-    <div class="row">
-        <button (click)="openCreateModal(createModal, airport)" class="btn btn-success">Add</button>
-    </div>
+<div class="container" *ngIf="!loading">
+
     <table class="table">
         <thead>
             <tr>
@@ -20,6 +21,10 @@
                     <button class="btn text-black" (click)="onSortChange('airportCityName')">
                         ⇅
                     </button>
+                </th>
+                <th>
+                    <button (click)="openCreateModal(createModal, airport)" class="btn btn-primary ml-5">Add
+                        Airport</button>
                 </th>
             </tr>
         </thead>
@@ -41,7 +46,7 @@
 
 <ng-template #editModal let-modal>
     <div class="modal-header">
-        <h5 class="modal-title">Edit Profile</h5>
+        <h5 class="modal-title">Edit Airport</h5>
         <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -78,13 +83,14 @@
 
 <ng-template #createModal let-modal>
     <div class="modal-header">
-        <h5 class="modal-title" id="editProfileLabel">Create Airport</h5>
+        <h5 class="modal-title" id="editProfileLabel">Add Airport</h5>
         <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
 
     <div class="modal-body">
+        <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
         <form [formGroup]="createFormAirport" (ngSubmit)="onSubmitCreate()">
             <div class="form-group row">
                 <label for="firstname" class="col-sm-4 col-form-label">IATA ID</label>
@@ -106,7 +112,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
+                <button type="submit" class="btn btn-primary">Add</button>
             </div>
         </form>
     </div>
@@ -124,7 +130,7 @@
     </div>
 
     <div class="modal-body">
-        <h3>Are you sure you want to delete Airport? </h3>
+        <h3>Are you sure you want to delete {{selectedDelete.airportIataId}} Airport? </h3>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
             <button type="submit" class="btn btn-primary" (click)="onSubmitDelete()">Yes/Delete</button>
