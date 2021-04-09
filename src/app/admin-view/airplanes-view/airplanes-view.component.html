@@ -1,7 +1,7 @@
 <div class="container">
 
     <div class="row">
-        <button (click)="openModal(createModal, airplane)" class="btn btn-success">Add</button>
+        <button (click)="openCreateModal(createModal, airplane)" class="btn btn-success">Add</button>
     </div>
     <table class="table">
         <thead>
@@ -22,8 +22,8 @@
             <tr *ngFor="let airplane of airplaneList">
                 <td>{{airplane.airplaneId}}</td>
                 <td>{{airplane.airplaneTypeId}}</td>
-                <td><button (click)="openModal(editModal, airplane)" class="btn btn-success">Update</button></td>
-                <td><button (click)="openModal(deleteModal, airplane)" class="btn btn-warning">Delete</button>
+                <td><button (click)="openEditModal(editModal, airplane)" class="btn btn-success">Update</button></td>
+                <td><button (click)="openDeleteModal(deleteModal, airplane)" class="btn btn-warning">Delete</button>
             </tr>
         </tbody>
 
@@ -81,7 +81,7 @@
             <div class="form-group row">
                 <label for="lastname" class="col-sm-4 col-form-label">Airplane Type ID</label>
                 <div class="col-sm-8">
-                    <input type="number" class="form-control" formControlName="airplaneTypeId" id="airplaneTypeId">
+                    <input type="number" class="form-control" value=1 formControlName="airplaneTypeId" id="airplaneTypeId">
                 </div>
             </div>
             <div class="modal-footer">

@@ -29,7 +29,7 @@ export class AirplanesViewComponent implements OnInit {
     });
     this.createFormAirplane = this.fb.group({
       airplaneId: [''],
-      airplaneTypeId: ['']
+      airplaneTypeId: 1
     });
   }
 
@@ -78,54 +78,71 @@ export class AirplanesViewComponent implements OnInit {
     )
   }
 
-  openModal(targetModal:any, airplane:any) {
+  //TODO - GENERALIZE openModal
+  openCreateModal(targetModal:any, airplane:any) {
     this.modalService.open(targetModal, {
      centered: true,
      backdrop: 'static'
     });
+   }
+
+  openEditModal(targetModal:any, airplane:any) {
+    this.modalService.open(targetModal, {
+     centered: true,
+     backdrop: 'static'
+  });
    
     this.editFormAirplane.patchValue({
       airplaneId: airplane.airplaneId,
       airplaneTypeId: airplane.airplaneTypeId
     });
+  }
 
-    this.createFormAirplane.patchValue({
-      airplaneId: airplane.airplaneId,
-      airplaneTypeId: airplane.airplaneTypeId
+  openDeleteModal(targetModal:any, airplane:any) {
+    this.modalService.open(targetModal, {
+     centered: true,
+     backdrop: 'static'
     });
 
     this.selectedDelete = airplane;
-   }
+  }
 
-   onSubmitUpdate() {
-    this.modalService.dismissAll();
-    console.log("res:", this.editFormAirplane.getRawValue());
-   }
+  onSubmitCreate(){
+  this.airplanesService.createAirplane(this.createFormAirplane.getRawValue()).subscribe(
+    data=>{
+      this.getAllAirplanes();
+      this.modalService.dismissAll();
+      this.createFormAirplane.reset();
+      console.log(data)
+    }, error => {
+      console.log(error)
+    }
+  )
+  }
 
-   onSubmitDelete() {
-     console.log(this.selectedDelete);
-    this.airplanesService.deleteAirplane(this.selectedDelete).subscribe(
-      data=>{
-        this.getAllAirplanes();
-        this.modalService.dismissAll();
-        console.log(data)
-      }, error => {
-        console.log(error)
-      }
-    )
-   }
+  onSubmitUpdate() {
+  this.airplanesService.updateAirplane(this.editFormAirplane.getRawValue()).subscribe(
+    data=>{
+      this.getAllAirplanes();
+      this.modalService.dismissAll();
+      this.editFormAirplane.reset();
+      console.log(data)
+    }, error => {
+      console.log(error)
+    }
+  )
+  }
 
-   onSubmitCreate(){
-    this.airplanesService.createAirplane(this.createFormAirplane.getRawValue()).subscribe(
-      data=>{
-        this.getAllAirplanes();
-        this.modalService.dismissAll();
-        this.createFormAirplane.reset();
-        console.log(data)
-      }, error => {
-        console.log(error)
-      }
-    )
-   }
+  onSubmitDelete() {
+  this.airplanesService.deleteAirplane(this.selectedDelete).subscribe(
+    data=>{
+      this.getAllAirplanes();
+      this.modalService.dismissAll();
+      console.log(data)
+    }, error => {
+      console.log(error)
+    }
+  )
+  } 
 
 }

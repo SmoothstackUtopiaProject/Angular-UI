@@ -19,7 +19,7 @@ export class AirplanesService {
   }
 
   updateAirplane(airplane: Airplane){
-    return this.http.post<Airplane>(environment.airplanesEndpoint, airplane)
+    return this.http.put<Airplane>(environment.airplanesEndpoint, airplane)
   }
 
   deleteAirplane(airplane: Airplane){

@@ -13,8 +13,18 @@ export class AirportsService {
   getAllAirports(){
     return this.http.get<Airport[]>(environment.airportsEndpoint)
   }
+  
   createAirport(airport: Airport){
     return this.http.post<Airport>(environment.airportsEndpoint, airport)
+  }
+
+  updateAirport(airport: Airport){
+    return this.http.put<Airport>(environment.airportsEndpoint, airport)
+  }
+
+  deleteAirport(airport: Airport){
+    console.log(environment.airportsEndpoint + "/" + airport.airportIataId);
+    return this.http.delete(environment.airportsEndpoint + "/" + airport.airportIataId)
   }
   
 }
