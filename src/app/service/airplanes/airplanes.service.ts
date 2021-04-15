@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Airplane } from 'src/app/model/airplane';
@@ -10,7 +11,7 @@ export class AirplanesService {
 
   constructor(private http: HttpClient) { }
 
-  getAllAirplanes(){
+  getAllAirplanes() : Observable<any>{
     return this.http.get<Airplane[]>(environment.airplanesEndpoint)
   }
 
