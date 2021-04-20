@@ -16,8 +16,9 @@ export class AirplanesViewComponent implements OnInit {
   editFormAirplane!: FormGroup;
   createFormAirplane!: FormGroup;
   selectedDelete!: Airplane;
-  currentSort = "up";
-  sortedItem = "";
+  page: number = 1;
+  key: string = 'airplaneId';
+  reverse: boolean = false;
 
   constructor(private airplanesService: AirplanesService, private fb: FormBuilder, private modalService: NgbModal) { }
 
@@ -33,39 +34,9 @@ export class AirplanesViewComponent implements OnInit {
     });
   }
 
-  onSortChange = (sortedItem : string) => {
-    let nextSort;
-
-    if(this.currentSort === "down") nextSort = "up";
-    else nextSort = "down";
-
-    this.currentSort = nextSort;
-    this.sortedItem = sortedItem;
-    this.sortList();
-  }
-
-  sortList() {
-    let airplaneSorted = this.airplaneList;
-
-    switch(this.sortedItem) {
-      case "airplaneId":
-        airplaneSorted.sort((a,b) => {
-          return this.currentSort === "up"
-            ? a.airplaneId - b.airplaneId
-            : b.airplaneId - a.airplaneId
-        });
-      break;
-
-      case "airplaneTypeId":
-        airplaneSorted.sort((a,b) => {
-          return this.currentSort === "up"
-            ? a.airplaneTypeId - b.airplaneTypeId
-            : b.airplaneTypeId - a.airplaneTypeId
-        });
-      break;
-    }
-
-    this.airplaneList = airplaneSorted;
+  sort(key: string) {
+    this.key = key;
+    this.reverse = !this.reverse;
   }
 
   getAllAirplanes(){
