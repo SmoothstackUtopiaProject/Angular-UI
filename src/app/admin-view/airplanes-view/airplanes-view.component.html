@@ -2,30 +2,32 @@
 
     <div class="row">
         <button (click)="openCreateModal(createModal, airplane)" class="btn btn-success">Add</button>
+        <pagination-controls (pageChange) = "page = $event"></pagination-controls>
     </div>
     <table class="table">
         <thead>
             <tr>
                 <th>Airplane ID
-                    <button class="btn text-black" (click)="onSortChange('airplaneId')">
+                    <button class="btn text-black" (click)="sort('airplaneId')">
                         ⇅
                     </button>
                 </th>
                 <th>Type ID
-                    <button class="btn text-black" (click)="onSortChange('airplaneTypeId')">
+                    <button class="btn text-black" (click)="sort('airplaneTypeId')">
                         ⇅
                     </button>
                 </th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let airplane of airplaneList">
+            <tr *ngFor="let airplane of airplaneList | orderBy: key: reverse | paginate: {itemsPerPage:10,currentPage:page}">
                 <td>{{airplane.airplaneId}}</td>
                 <td>{{airplane.airplaneTypeId}}</td>
                 <td><button (click)="openEditModal(editModal, airplane)" class="btn btn-success">Update</button></td>
                 <td><button (click)="openDeleteModal(deleteModal, airplane)" class="btn btn-warning">Delete</button>
             </tr>
         </tbody>
+        
 
     </table>
 </div>
