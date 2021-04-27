@@ -15,7 +15,7 @@
             <a href="#">Bookings</a>
           </li>
           <li>
-            <a href="#">Flights</a>
+            <a (click)=displayView(flights)>Flights</a>
           </li>
           <li>
             <a href="#">Routes</a>
@@ -37,6 +37,10 @@
 
       <div *ngIf="currentView === 'AIRPORTS'">
         <app-airports-view></app-airports-view>
+      </div>
+
+      <div *ngIf="currentView === 'FLIGHTS'">
+        <app-flights-view></app-flights-view>
       </div>
 
     </div>
