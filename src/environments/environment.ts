@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  airportsEndpoint: 'http://localhost:8082/airports',
-  airplanesEndpoint: 'http://localhost:8081/airplanes',
-  flightsEndpoint: 'http://localhost:8085/flights'
+  airportsEndpoint: 'http://localhost:8080/airports',
+  airplanesEndpoint: 'http://localhost:8080/airplanes',
+  flightsEndpoint: 'http://localhost:8080/flights'
 };
 
 /*

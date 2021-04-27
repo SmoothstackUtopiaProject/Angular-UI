@@ -19,6 +19,7 @@ export class AirplanesViewComponent implements OnInit {
   page: number = 1;
   key: string = 'airplaneId';
   reverse: boolean = false;
+  loading!: boolean;
 
   constructor(private airplanesService: AirplanesService, private fb: FormBuilder, private modalService: NgbModal) { }
 
@@ -40,10 +41,12 @@ export class AirplanesViewComponent implements OnInit {
   }
 
   getAllAirplanes(){
+    this.loading = true;
     this.airplanesService.getAllAirplanes().subscribe(
       response => {
         this.airplaneList = response;
-        console.log(response)
+        this.loading = false;
+        console.log(response);
         return response;
       }
     )
