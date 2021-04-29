@@ -22,6 +22,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { OrderModule } from 'ngx-order-pipe';
+import { UsersViewComponent } from './admin-view/users-view/users-view.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { OrderModule } from 'ngx-order-pipe';
     RoutesViewComponent,
     SidebarComponent,
     LoadingComponent,
+    UsersViewComponent,
   ],
   imports: [
     BrowserModule,

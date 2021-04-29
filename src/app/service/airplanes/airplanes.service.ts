@@ -26,4 +26,8 @@ export class AirplanesService {
   deleteAirplane(airplane: Airplane){
     return this.http.delete(environment.airplanesEndpoint + "/" + airplane.airplaneId)
   }
+
+  getbyId(){
+    return this.http.get<Airplane>("https://myxf5vevqc.execute-api.us-east-1.amazonaws.com/dev/airplanes/21")
+  }
 }

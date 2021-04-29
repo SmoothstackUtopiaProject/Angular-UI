@@ -9,6 +9,7 @@ export class AdminViewComponent implements OnInit {
 
   airports = "AIRPORTS";
   airplanes = "AIRPLANES";
+  users = "USERS";
   currentView = "AIRPLANES";
 
   constructor() { }

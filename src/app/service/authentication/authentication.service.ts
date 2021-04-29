@@ -3,8 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { User } from 'src/app/model/user';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { map } from 'rxjs/operators';
-
-const API_URL = "http://localhost:8083/auth";
+import { environment } from 'src/environments/environment';
 
 export const TOKEN = 'token'
 export const AUTHENTICATED_USER = 'authenticaterUser'
@@ -25,7 +24,7 @@ export class AuthenticationService {
       Authorization: basicAuthHeaderString
     });
 
-    return this.http.get<User>(`${API_URL}/login`, {headers})
+    return this.http.get<User>(`${environment.authEndpoint}/login`, {headers})
     .pipe(
       map(
         data=>{
