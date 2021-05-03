@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewChild, HostListener, AfterViewInit, ChangeDetectorRef } from '@angular/core';
-import { MdbTableDirective, MdbTablePaginationComponent, MdbTableService } from 'ng-uikit-pro-standard';
+import { Component, OnInit, ElementRef, HostListener, AfterViewInit, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { MdbTableDirective, MdbTablePaginationComponent } from 'ng-uikit-pro-standard';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'src/app/model/user';
@@ -12,12 +12,13 @@ import { UsersService } from 'src/app/service/users/users.service';
 })
 export class UsersViewComponent implements OnInit, AfterViewInit{
 
+  @ViewChild(MdbTableDirective, { static: true }) mdbTable!: MdbTableDirective;
   @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination!: MdbTablePaginationComponent;
-  @ViewChild(MdbTableDirective, {static: true}) mdbTable!: MdbTableDirective;
+  @ViewChild('row', { static: true }) row!: ElementRef;
 
   user!: User;
   userList: User[] =[];
-  headElements = ['ID', 'First', 'Last', 'Email', 'Phone', 'Role', 'Update', 'Delete', 'Password'];
+  headElements = ['ID', 'First', 'Last', 'Email', 'Phone', 'Role', 'Update', 'Delete', 'Password Recovery'];
   editFormUser!: FormGroup;
   createFormUser!: FormGroup;
   searchText!: string ;
@@ -47,7 +48,6 @@ export class UsersViewComponent implements OnInit, AfterViewInit{
     this.getAllUsers();
     this.editFormUser = this.fb.group(this.formData);
     this.createFormUser = this.fb.group(this.formData);
-    
   }
 
   searchItems() {
@@ -62,13 +62,11 @@ export class UsersViewComponent implements OnInit, AfterViewInit{
     }
 }
 
-
   getAllUsers(){
     this.loading = true;
     this.userService.getAllUsers().subscribe(
       response =>{
-        this.userList = response;
-        this.mdbTable.setDataSource(this.userList);
+        this.mdbTable.setDataSource(response);
         this.userList = this.mdbTable.getDataSource();
         this.previous = this.mdbTable.getDataSource();
         return this.loading = false;
@@ -149,13 +147,13 @@ export class UsersViewComponent implements OnInit, AfterViewInit{
   onSubmitDelete() {
     this.userService.deleteUser(this.selected).subscribe(
       data=>{
-        this.getAllUsers();
-        this.modalService.dismissAll();
         console.log(data)
       }, error => {
         console.log(error)
       }
-    )
+      )
+      this.modalService.dismissAll();
+      this.getAllUsers();
   }
 
 

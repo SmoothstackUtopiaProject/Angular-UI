@@ -10,11 +10,11 @@
             </div>
         </div>
     </div>
-    <table mdbTable #tableEl="mdbTable" class="table">
+    <table mdbTable #tableEl="mdbTable" id="tableSortExample" class="z-depth-1">
         <thead>
             <tr>
-                <th *ngFor="let head of headElements; let i = index" scope="col">
-                    {{head}}
+                <th *ngFor="let head of headElements; let i = index" aria-controls="tableSortExample" scope="col"
+                    [mdbTableSort]="userList" [sortBy]="headElements[i]">{{head | titlecase}}
                 </th>
             </tr>
         </thead>
@@ -44,10 +44,10 @@
                         <mat-icon>delete_forever</mat-icon>
                     </button>
                 </td>
-                <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"
-                    scope="row">
+                <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row"
+                    class="pwd-recovery-td">
 
-                    <button class="btn btn-warning">
+                    <button class="btn btn-warning ">
                         <mat-icon>restore_page</mat-icon>
                     </button>
                 </td>
@@ -123,7 +123,7 @@
 
 <ng-template #deleteModal let-modal>
     <div class="modal-header">
-        <h5 class="modal-title">Delete Airport</h5>
+        <h5 class="modal-title">Delete User</h5>
         <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>

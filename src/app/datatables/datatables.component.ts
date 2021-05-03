@@ -10,39 +10,15 @@ export class DatatablesComponent {
 
   @ViewChild(MdbTableDirective, {static: true}) mdbTable!: MdbTableDirective;
 
+
   elements: any = [];
-  headElements = ['ID', 'First', 'Last', 'Handle'];
-  searchText: string = '';
-  previous!: string;
+  headElements = ['id', 'first', 'last', 'handle'];
 
   constructor() { }
 
-  @HostListener('input') oninput() {
-    this.searchItems();
-}
-
-  ngOnInit(): void {
-
-    for (let i = 1; i <= 10; i++) {
-      this.elements.push({
-          id: i.toString(), first: 'Wpis ' + i, last: 'Last ' + i, handle: 'Handle ' + i
-      });
-  }
-  console.log(this.elements)
-  this.mdbTable.setDataSource(this.elements);
-  this.previous = this.mdbTable.getDataSource();
-  }
-
-  searchItems() {
-    const prev = this.mdbTable.getDataSource();
-    if (!this.searchText) {
-        this.mdbTable.setDataSource(this.previous);
-        this.elements = this.mdbTable.getDataSource();
+  ngOnInit() {
+    for (let i = 1; i <= 15; i++) {
+      this.elements.push({ id: i, first: 'User ' + i, last: 'Name ' + i, handle: 'Handle ' + i });
     }
-    if (this.searchText) {
-        this.elements = this.mdbTable.searchLocalDataBy(this.searchText);
-        this.mdbTable.setDataSource(prev);
-    }
-}
-
+  }
 }

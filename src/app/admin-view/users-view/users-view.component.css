@@ -1,4 +1,8 @@
-td {
+.pwd-recovery-td {
+  text-align: center;
+}
+
+th:last-child {
   text-align: center;
 }
 
@@ -6,8 +10,8 @@ td {
   padding: 20px;
 }
 
-li {
-  margin-right: 5px;
+ul {
+  padding: 20px;
 }
 
 ul {
