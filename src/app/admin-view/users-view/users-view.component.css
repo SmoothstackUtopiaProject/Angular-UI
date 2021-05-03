@@ -1,0 +1,15 @@
+td {
+  text-align: center;
+}
+
+.table-responsive {
+  padding: 20px;
+}
+
+li {
+  margin-right: 5px;
+}
+
+ul {
+  justify-content: center;
+}

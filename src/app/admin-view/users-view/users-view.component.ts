@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { MdbTableDirective, MdbTablePaginationComponent, MdbTableService } from 'ng-uikit-pro-standard';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'src/app/model/user';
@@ -9,12 +10,18 @@ import { UsersService } from 'src/app/service/users/users.service';
   templateUrl: './users-view.component.html',
   styleUrls: ['./users-view.component.css']
 })
-export class UsersViewComponent implements OnInit {
+export class UsersViewComponent implements OnInit, AfterViewInit{
+
+  @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination!: MdbTablePaginationComponent;
+  @ViewChild(MdbTableDirective, {static: true}) mdbTable!: MdbTableDirective;
 
   user!: User;
   userList: User[] =[];
+  headElements = ['ID', 'First', 'Last', 'Email', 'Phone', 'Role', 'Update', 'Delete', 'Password'];
   editFormUser!: FormGroup;
   createFormUser!: FormGroup;
+  searchText!: string ;
+  previous!: string;
   selected!: User;
   formData = {
     userId: [''],
@@ -25,26 +32,59 @@ export class UsersViewComponent implements OnInit {
     userRole: ['']
   };
   errorMessage = '';
+  loading!: boolean;
 
   constructor(private userService: UsersService,
     private fb: FormBuilder,
-    private modalService: NgbModal) { }
+    private modalService: NgbModal,
+    private cdRef: ChangeDetectorRef) { }
 
+    @HostListener('input') oninput() {
+      this.searchItems();
+  }
+  
   ngOnInit(): void {
     this.getAllUsers();
     this.editFormUser = this.fb.group(this.formData);
     this.createFormUser = this.fb.group(this.formData);
+    
   }
 
+  searchItems() {
+    const prev = this.mdbTable.getDataSource();
+    if (!this.searchText) {
+        this.mdbTable.setDataSource(this.previous);
+        this.userList = this.mdbTable.getDataSource();
+    }
+    if (this.searchText) {
+        this.userList = this.mdbTable.searchLocalDataBy(this.searchText);
+        this.mdbTable.setDataSource(prev);
+    }
+}
+
+
   getAllUsers(){
+    this.loading = true;
     this.userService.getAllUsers().subscribe(
       response =>{
         this.userList = response;
-        return response
+        this.mdbTable.setDataSource(this.userList);
+        this.userList = this.mdbTable.getDataSource();
+        this.previous = this.mdbTable.getDataSource();
+        return this.loading = false;
       }, err =>{
+        this.loading = false;
         console.log(err)
       }
     )
+  }
+
+  ngAfterViewInit() {
+    this.mdbTablePagination.setMaxVisibleItemsNumberTo(5);
+
+    this.mdbTablePagination.calculateFirstItemIndex();
+    this.mdbTablePagination.calculateLastItemIndex();
+    this.cdRef.detectChanges();
   }
 
   openCreateModal(targetModal:any, user:any) {

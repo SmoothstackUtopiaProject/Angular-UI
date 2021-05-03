@@ -5,6 +5,10 @@
   color: red;
 }
 
+svg {
+  margin-top: 150px;
+}
+
 .loading--plane {
   width: 180px;
   stroke-dasharray: 425.59;
@@ -14,7 +18,7 @@
 
 @keyframes plane-loading-animation {
   50% {
-    stroke-dashoffset: 155.59;
+    stroke-dashoffset: -155.59;
   }
   50% {
     stroke-dashoffset: 0;

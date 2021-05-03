@@ -1,30 +1,68 @@
 <body>
-
-
-    <div class="container h-50 w-50">
-        <div class="row h-100 justify-content-center align-items-center">
-            <div *ngIf="loading">
-                <app-loading></app-loading>
-            </div>
-            <form class="col-12 login-form p-5" *ngIf="!loading">
-                <h1 class="text-center">Utopia Management System</h1>
-                <div class="error-message">
-                    <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
-                </div>
-                <div class="form-group">
-                    <label for="formGroupExampleInput" class="h5">Email</label>
-                    <input type="email" class="form-control" required autofocus [(ngModel)]="userEmail"
-                        name="userEmail">
-                </div>
-                <div class="form-group">
-                    <label for="formGroupExampleInput2" class="h5">Password</label>
-                    <input type="password" class="form-control" required [(ngModel)]="userPassword" name=userPassword>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <button (click)=handleLogin() type="button" class="btn btn-warning btn-lg w-50 mt-3">Login</button>
-                </div>
-            </form>
-        </div>
+    <div class="loading-anime" *ngIf="loading">
+        <app-loading></app-loading>
     </div>
+
+    <div class="container" *ngIf="!loading">
+        <div class="row">
+
+            <div class="col login-header">
+                <span>
+                    <img src="assets/images/airplane-logo.jpg" class="img-logo" alt="">
+                </span>
+                <span class="h1">UTOPIA</span>
+            </div>
+            <div class="w-100"></div>
+            <div class="col">
+                <form class="col-12 login-form">
+                    <p class="text-center h4">Sing in</p>
+                    <div class="error-message">
+                        <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="formGroupExampleInput" class="h5">Email</label>
+                        <input type="email" class="form-control" required autofocus [(ngModel)]="userEmail"
+                            name="userEmail">
+                    </div>
+                    <div class="form-group">
+                        <label for="formGroupExampleInput2" class="h5">Password</label>
+                        <input type="password" class="form-control" required [(ngModel)]="userPassword"
+                            name=userPassword>
+                    </div>
+
+                    <div>
+                        <input type="checkbox" class="rememberMe-checkbox"> <label for="rememberMe">Remember
+                            me</label>
+
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button (click)=handleLogin() type="button" class="btn btn-lg w-100 mt-5">Login</button>
+                    </div>
+
+                    <div class="needHelpBtn">
+
+                        <a href="">Need help?</a>
+
+                    </div>
+
+                </form>
+
+
+
+            </div>
+            <div class="w-100"></div>
+            <div class="col footer-col">
+                <a href="https://www.utopiaairlines.xyz/"> Utopia Airlines User Portal</a>
+            </div>
+
+        </div>
+        <p class="text-center mt-3">
+            Copyright © 2021 Utopia Airlines. All Rights Reserved.
+        </p>
+
+    </div>
+
+
+
 
 </body>

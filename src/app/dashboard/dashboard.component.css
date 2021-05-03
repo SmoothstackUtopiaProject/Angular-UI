@@ -1,0 +1,37 @@
+@import url("https://fonts.googleapis.com/css2?family=Bree+Serif&family=Cantarell:wght@700&display=swap");
+
+body {
+  font-family: "Bree Serif", serif;
+  font-family: "Cantarell", sans-serif;
+}
+
+.container {
+  margin-top: 50px;
+}
+
+.container .row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+}
+
+.container .col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 1px 1px 2px 2px rgb(156, 72, 235);
+  margin: 3px;
+  height: 60px;
+}
+
+.container .col:hover {
+  background-color: rgb(156, 72, 235);
+  color: white;
+}
+
+@media only screen and (min-width: 708px) {
+  .container {
+    width: 500px;
+  }
+}

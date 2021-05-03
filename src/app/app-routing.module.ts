@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { LoadingComponent } from './shared/loading/loading.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 const routes: Routes = [
   {path: '', component: LoginComponent},
@@ -11,6 +12,7 @@ const routes: Routes = [
   {path: 'navbar', component: NavbarComponent},
   {path: 'admin', component: AdminViewComponent},
   {path: 'loading', component: LoadingComponent},
+  {path: 'dashboard', component: DashboardComponent},
 
 ];
 
