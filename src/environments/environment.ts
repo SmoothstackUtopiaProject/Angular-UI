@@ -2,11 +2,19 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+const URL = 'http://localhost:8080'; 
+
 export const environment = {
   production: false,
-  airportsEndpoint: 'http://localhost:8080/airports',
-  airplanesEndpoint: 'http://localhost:8080/airplanes',
-  flightsEndpoint: 'http://localhost:8080/flights'
+  airportsEndpoint: URL + '/airports',
+  airplanesEndpoint: URL + '/airplanes',
+  authEndpoint: URL + '/auth',
+  bookingsEndpoint: URL + '/bookings',
+  flightsEndpoint: URL + '/flights',
+  routesEndpoint: URL + '/routes',
+  passengersEndpoint: URL + '/passengers',
+  paymentsEndpoint: URL + '/payments',
+  usersEndpoint: URL + '/users'
 };
 
 /*

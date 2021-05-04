@@ -6,10 +6,10 @@
       <div class="p-4 pt-5 text-center">
         <ul class="list-unstyled mb-5">
           <li>
-            <a (click)=displayView(airplanes) >Airplanes</a>
+            <a (click)=displayView(airplanes)>Airplanes</a>
           </li>
           <li>
-            <a (click)=displayView(airports) >Airports</a>
+            <a (click)=displayView(airports)>Airports</a>
           </li>
           <li>
             <a href="#">Bookings</a>
@@ -21,7 +21,7 @@
             <a href="#">Routes</a>
           </li>
           <li>
-            <a href="#">Users</a>
+            <a (click)=displayView(users)>Users</a>
           </li>
         </ul>
 
@@ -39,6 +39,9 @@
         <app-airports-view></app-airports-view>
       </div>
 
+      <div *ngIf="currentView === 'USERS'">
+        <app-users-view></app-users-view>
+      
       <div *ngIf="currentView === 'FLIGHTS'">
         <app-flights-view></app-flights-view>
       </div>

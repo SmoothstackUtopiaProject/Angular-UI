@@ -1,0 +1,35 @@
+<app-navbar></app-navbar>
+
+<body>
+    <div class="container" *ngIf="!hideMenu">
+        <div class="row">
+            <div class="col btn">
+                Book a flight</div>
+        </div>
+        <div class="row">
+            <div (click)=displayView(users) class="col btn">Users</div>
+            <div class="col btn">Routes</div>
+        </div>
+        <div class="row">
+            <div (click)=displayView(airports) class="col btn">Airports</div>
+            <div class="col btn">Airplanes</div>
+        </div>
+        <div class="row">
+            <div (click)=displayView(flights) class="col btn">Flights</div>
+            <div class="col btn">Bookings</div>
+        </div>
+    </div>
+
+    <div *ngIf="currentView === 'USERS'">
+        <app-users-view></app-users-view>
+    </div>
+
+    <div *ngIf="currentView === 'AIRPORTS'">
+        <app-airports-view></app-airports-view>
+    </div>
+
+    <div *ngIf="currentView === 'FLIGHTS'">
+        <app-datatables></app-datatables>
+    </div>
+
+</body>

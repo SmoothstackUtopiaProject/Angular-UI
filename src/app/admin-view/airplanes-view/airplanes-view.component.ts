@@ -41,7 +41,13 @@ export class AirplanesViewComponent implements OnInit {
   }
 
   getAllAirplanes(){
-    this.loading = true;
+    this.airplanesService.getbyId().subscribe(
+      res =>{
+        console.log(res)
+      }, err =>{
+        console.log(err)
+      }
+    )
     this.airplanesService.getAllAirplanes().subscribe(
       response => {
         this.airplaneList = response;
