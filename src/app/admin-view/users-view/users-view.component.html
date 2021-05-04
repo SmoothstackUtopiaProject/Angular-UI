@@ -1,23 +1,80 @@
 <app-loading *ngIf="loading"></app-loading>
 
 <div class="table-responsive">
-    <div class="row">
-        <div class="col-md-12 mx-auto">
+    <div class="row nav-search-div">
+        <div class="col-md-8 mx-auto">
             <div class="md-form">
                 <input *ngIf="!loading" type="text" [(ngModel)]="searchText" class="form-control" id="search" mdbInput
-                    placeholder="Search" />
-
+                    placeholder="search" />
             </div>
         </div>
+
+        <div class="col-md-2 mx-auto">
+            <div class="md-form">
+                <button class="btn seach-div-btn">add a new user</button>
+            </div>
+        </div>
+        <div class="col-md-2 mx-auto">
+            <div class="md-form">
+                <button (click)="returnToDashboard()" class="btn seach-div-btn">return to dashboard</button>
+            </div>
+        </div>
+
     </div>
-    <table mdbTable #tableEl="mdbTable" id="tableSortExample" class="z-depth-1">
+    <table mdbTable #tableEl="mdbTable" id="tableSortExample" class="table table-responsive-md">
+
         <thead>
+            <tr>
+                <th class="th-sm">
+                    <a (click)="sortBy('userId')">ID
+                        <mdb-icon fas icon="sort" class="ml-1"></mdb-icon>
+                    </a>
+                </th>
+                <th class="th-lg">
+                    <a (click)="sortBy('userFirstName')">First Name
+                        <mdb-icon fas icon="sort" class="ml-1"></mdb-icon>
+                    </a>
+                </th>
+                <th class="th-lg">
+                    <a (click)="sortBy('userLastName')">Last Name
+                        <mdb-icon fas icon="sort" class="ml-1"></mdb-icon>
+                    </a>
+                </th>
+                <th class="th-sm">
+                    <a (click)="sortBy('userEmail')">Email
+                        <mdb-icon fas icon="sort" class="ml-1"></mdb-icon>
+                    </a>
+                </th>
+                <th class="th-sm">
+                    <a (click)="sortBy('userPhone')">Phone
+                        <mdb-icon fas icon="sort" class="ml-1"></mdb-icon>
+                    </a>
+                </th>
+                <th class="th-sm">
+                    <a (click)="sortBy('userRole')">Role
+                        <mdb-icon fas icon="sort" class="ml-1"></mdb-icon>
+                    </a>
+                </th>
+                <th class="th-sm">
+                    Update
+                </th>
+                <th class="th-sm">
+                    Delete
+                </th>
+                <th class="th-lg">
+                    Reset Password
+                </th>
+            </tr>
+        </thead>
+
+
+        <!-- <thead>
             <tr>
                 <th *ngFor="let head of headElements; let i = index" aria-controls="tableSortExample" scope="col"
                     [mdbTableSort]="userList" [sortBy]="headElements[i]">{{head | titlecase}}
                 </th>
             </tr>
-        </thead>
+        </thead> -->
         <tbody>
             <tr *ngFor="let user of userList; let i = index">
                 <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"

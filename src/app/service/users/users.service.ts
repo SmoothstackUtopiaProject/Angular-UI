@@ -24,7 +24,7 @@ export class UsersService {
   }
 
   deleteUser(user: User){
-    return this.http.delete(environment.usersEndpoint + "/" + user.userId)
+    return this.http.delete(environment.authEndpoint + "/" + user.userId)
   }
 
 }

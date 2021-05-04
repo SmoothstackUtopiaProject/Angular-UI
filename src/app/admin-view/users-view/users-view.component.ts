@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'src/app/model/user';
 import { UsersService } from 'src/app/service/users/users.service';
+import { DashboardComponent } from 'src/app/dashboard/dashboard.component';
 
 @Component({
   selector: 'app-users-view',
@@ -34,11 +35,17 @@ export class UsersViewComponent implements OnInit, AfterViewInit{
   };
   errorMessage = '';
   loading!: boolean;
+  hideMenu!: string | null;
+  private sorted = false;
+
+
 
   constructor(private userService: UsersService,
     private fb: FormBuilder,
     private modalService: NgbModal,
-    private cdRef: ChangeDetectorRef) { }
+    private cdRef: ChangeDetectorRef,
+    private dashboard: DashboardComponent
+    ) { }
 
     @HostListener('input') oninput() {
       this.searchItems();
@@ -62,6 +69,11 @@ export class UsersViewComponent implements OnInit, AfterViewInit{
     }
 }
 
+returnToDashboard(){
+  this.dashboard.returnToDashboard();
+
+}
+
   getAllUsers(){
     this.loading = true;
     this.userService.getAllUsers().subscribe(
@@ -75,6 +87,23 @@ export class UsersViewComponent implements OnInit, AfterViewInit{
         console.log(err)
       }
     )
+  }
+
+  sortBy(by: string | any): void {
+    console.log(this.userList)
+
+    this.userList.sort((a: any, b: any) => {
+      if (a[by] < b[by]) {
+        return this.sorted ? 1 : -1;
+      }
+      if (a[by] > b[by]) {
+        return this.sorted ? -1 : 1;
+      }
+
+      return 0;
+    });
+
+    this.sorted = !this.sorted;
   }
 
   ngAfterViewInit() {
@@ -108,7 +137,7 @@ export class UsersViewComponent implements OnInit, AfterViewInit{
     });
   }
 
-  openDeleteModal(targetModal:any, user:User) {
+  openDeleteModal(targetModal:any, user:any) {
     this.modalService.open(targetModal, {
      centered: true,
      backdrop: 'static'
@@ -145,15 +174,15 @@ export class UsersViewComponent implements OnInit, AfterViewInit{
   }
   
   onSubmitDelete() {
-    this.userService.deleteUser(this.selected).subscribe(
+    this.userService.deleteUser(this.selected)
+    .subscribe(
       data=>{
+        this.getAllUsers();
+        this.modalService.dismissAll();
         console.log(data)
       }, error => {
         console.log(error)
-      }
-      )
-      this.modalService.dismissAll();
-      this.getAllUsers();
+      })
   }
 
 

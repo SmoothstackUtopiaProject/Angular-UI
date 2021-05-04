@@ -1,19 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Cabin:wght@700&display=swap");
+
 .pwd-recovery-td {
   text-align: center;
 }
 
-th:last-child {
-  text-align: center;
+.table-responsive {
+  padding: 15px 12px 12px 12px;
 }
 
-.table-responsive {
-  padding: 20px;
+th {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: "Cabin", sans-serif;
+  font-size: 1rem;
+}
+
+td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 ul {
-  padding: 20px;
+  padding: 10px;
 }
 
 ul {
   justify-content: center;
+}
+table {
+  padding-top: 10px;
+}
+.md-form {
+  display: flex;
+  flex-direction: row;
+}
+thead {
+  background-color: rgb(240, 240, 240);
+  box-shadow: 2px 2px 5px 5px rgb(220, 220, 220);
+}
+
+#search {
+  box-shadow: 1px 1px 2px 2px rgb(156, 72, 235);
+  text-align: center;
+}
+
+.nav-search-div {
+  padding: 18px;
+  box-shadow: 2px 2px 5px 5px rgb(220, 220, 220);
+  margin-bottom: 20px;
+}
+
+.seach-div-btn {
+  width: 200px;
+  background-color: white;
+  box-shadow: 1px 1px 2px 2px rgb(156, 72, 235);
+}
+
+.seach-div-btn:hover {
+  background-color: rgb(156, 72, 235);
+  color: white;
+}
+
+tr:hover {
+  background-color: rgb(237, 237, 237);
+}
+
+@media only screen and (max-width: 950px) {
+  .nav-search-div {
+    display: flex;
+    flex-direction: column;
+  }
+  .seach-div-btn {
+    width: 100%;
+  }
 }
