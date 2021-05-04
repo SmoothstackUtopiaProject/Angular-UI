@@ -4,19 +4,19 @@
     <div class="row nav-search-div">
         <div class="col-md-8 mx-auto">
             <div class="md-form">
-                <input *ngIf="!loading" type="text" [(ngModel)]="searchText" class="form-control" id="search" mdbInput
-                    placeholder="search" />
+                <input *ngIf="!loading" type="text" [(ngModel)]="searchText" class="form-control order-1" id="search"
+                    mdbInput placeholder="search" />
             </div>
         </div>
 
         <div class="col-md-2 mx-auto">
             <div class="md-form">
-                <button class="btn seach-div-btn">add a new user</button>
+                <button class="btn seach-div-btn order-2">add a new user</button>
             </div>
         </div>
         <div class="col-md-2 mx-auto">
             <div class="md-form">
-                <button (click)="returnToDashboard()" class="btn seach-div-btn">return to dashboard</button>
+                <button (click)="returnToDashboard()" class="btn seach-div-btn order-3">return to dashboard</button>
             </div>
         </div>
 
