@@ -25,9 +25,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { DatatablesComponent } from './datatables/datatables.component';
 import { MDBBootstrapModulesPro } from 'ng-uikit-pro-standard';
 import { AngularMaterialModule } from './angular-material.module';
-
-
-
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
   declarations: [
@@ -56,8 +54,8 @@ import { AngularMaterialModule } from './angular-material.module';
     NgxPaginationModule,
     OrderModule,
     MDBBootstrapModulesPro,
-    AngularMaterialModule
-
+    AngularMaterialModule,
+    Ng2SearchPipeModule
   ],
   providers: [
     // {provide: HTTP_INTERCEPTORS, useClass: HttpIntercepterService, multi: true}
