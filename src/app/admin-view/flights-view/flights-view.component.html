@@ -5,18 +5,38 @@
 <div class="container" *ngIf="!loading">
 
     <div class="row">
-        <pagination-controls (pageChange) = "page = $event"></pagination-controls>
+        <div class="col">
+            <input class="form-control" type="text" name="origin" [(ngModel)]="origin" (ngModelChange)="search()" placeholder="Search for Origin City Name">
+        </div>  
+        <div class="col">
+            <pagination-controls (pageChange) = "page = $event"></pagination-controls>
+        </div>
     </div>
     <table class="table">
         <thead>
             <tr>
                 <th>Flight ID
-                    <button class="btn text-black" (click)="sort('flightId')">
+                    <button class="btn text-black" (click)="onSortChange('flightId')">
                         ⇅
                     </button>
                 </th>
                 <th>Airplane ID
-                    <button class="btn text-black" (click)="sort('airplaneTypeId')">
+                    <button class="btn text-black" (click)="onSortChange('airplaneId')">
+                        ⇅
+                    </button>
+                </th>
+                <th>Origin
+                    <button class="btn text-black" (click)="onSortChange('originCityName')">
+                        ⇅
+                    </button>
+                </th>
+                <th>Destination
+                    <button class="btn text-black" (click)="onSortChange('destinationCityName')">
+                        ⇅
+                    </button>
+                </th>
+                <th>Departure(UTC)
+                    <button class="btn text-black" (click)="onSortChange('departureTime')">
                         ⇅
                     </button>
                 </th>
@@ -27,9 +47,12 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let flight of flightList | orderBy: key: reverse | paginate: {itemsPerPage:10,currentPage:page}">
+            <tr *ngFor="let flight of flightList | paginate: {itemsPerPage:10,currentPage:page}">
                 <td>{{flight.flightId}}</td>
                 <td>{{flight.flightAirplane.airplaneId}}</td>
+                <td>{{flight.flightRoute.routeOrigin.airportCityName}}</td>
+                <td>{{flight.flightRoute.routeDestination.airportCityName}}</td>   
+                <td>{{flight.flightDepartureTime}}</td>
                 <td><button (click)="openEditModal(editModal, flight)" class="btn btn-success">Update</button></td>
                 <td><button (click)="openDeleteModal(deleteModal, flight)" class="btn btn-warning">Delete</button>
             </tr>
@@ -82,15 +105,49 @@
     <div class="modal-body">
         <form [formGroup]="createFormFlight" (ngSubmit)="onSubmitCreate()">
             <div class="form-group row">
-                <label for="firstname" class="col-sm-4 col-form-label">Flight ID</label>
+                <label for="flightId" class="col-sm-4 col-form-label">Flight ID</label>
                 <div class="col-sm-8">
                     <input type="number" class="form-control" formControlName="flightId" id="flightId" placeholder="Auto-Generated" readonly>
                 </div>
             </div>
             <div class="form-group row">
-                <label for="lastname" class="col-sm-4 col-form-label">Flight Type ID</label>
+                <label for="flightRoute" class="col-sm-4 col-form-label">Route ID</label>
                 <div class="col-sm-8">
-                    <input type="number" class="form-control" value=1 formControlName="flightTypeId" id="flightTypeId">
+                    <input type="number" class="form-control" value=1 formControlName="flightRoute" id="flightRoute">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="flightAirplane" class="col-sm-4 col-form-label">Airplane ID</label>
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" value=1 formControlName="flightAirplane" id="flightAirplane">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="flightSeatingId" class="col-sm-4 col-form-label">Seating ID</label>
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" value=1 formControlName="flightSeatingId" id="flightSeatingId">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="flightDepartureTime" class="col-sm-4 col-form-label">Departure</label>
+                <div class="col-sm-8">
+                    <input type="datetime-local" class="form-control" formControlName="flightDepartureTime" id="flightDepartureTime">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col">
+                    <label class="col-sm-8 col-form-label">Duration:  Hours</label>
+                    <input type="number" class="form-control" value=1 id="hours">
+                </div>
+                <div class="col">
+                    <label class="col-sm-4 col-form-label">Minutes</label>
+                    <input type="number" class="form-control" value=1 id="minutes">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Status</label>
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" placeholder="INACTIVE" readonly>
                 </div>
             </div>
             <div class="modal-footer">

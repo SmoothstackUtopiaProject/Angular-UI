@@ -22,6 +22,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { OrderModule } from 'ngx-order-pipe';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { OrderModule } from 'ngx-order-pipe';
     ReactiveFormsModule,
     NgbModule,
     NgxPaginationModule,
-    OrderModule
+    OrderModule,
+    Ng2SearchPipeModule
 
   ],
   providers: [
