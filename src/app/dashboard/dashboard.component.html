@@ -16,7 +16,7 @@
         </div>
         <div class="row">
             <div (click)=displayView(flights) class="col btn">Flights</div>
-            <div class="col btn">Bookings</div>
+            <div class="col btn">Flights</div>
         </div>
     </div>
 
@@ -29,7 +29,7 @@
     </div>
 
     <div *ngIf="currentView === 'FLIGHTS'">
-        <app-datatables></app-datatables>
+        <app-flights-view></app-flights-view>
     </div>
 
 </body>

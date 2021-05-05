@@ -27,6 +27,7 @@
     "angular5-csv": "^0.2.11",
     "bootstrap": "^4.6.0",
     "mdb-ui-kit": "^3.5.0",
+    "moment": "^2.29.1",
     "ng-uikit-pro-standard": "^1.0.0",
     "ng2-search-filter": "^0.5.1",
     "ngx-order-pipe": "^2.1.1",

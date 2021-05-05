@@ -40,6 +40,11 @@
                         ⇅
                     </button>
                 </th>
+                <th>Status
+                    <button class="btn text-black" (click)="onSortChange('status')">
+                        ⇅
+                    </button>
+                </th>
                 <th>
                     <button (click)="openCreateModal(createModal, flight)" class="btn btn-primary ml-5">Add
                         Flight</button>
@@ -53,6 +58,7 @@
                 <td>{{flight.flightRoute.routeOrigin.airportCityName}}</td>
                 <td>{{flight.flightRoute.routeDestination.airportCityName}}</td>   
                 <td>{{flight.flightDepartureTime}}</td>
+                <td>{{flight.flightStatus}}</td>
                 <td><button (click)="openEditModal(editModal, flight)" class="btn btn-success">Update</button></td>
                 <td><button (click)="openDeleteModal(deleteModal, flight)" class="btn btn-warning">Delete</button>
             </tr>
@@ -74,40 +80,9 @@
     <div class="modal-body">
         <form [formGroup]="editFormFlight" (ngSubmit)="onSubmitUpdate()">
             <div class="form-group row">
-                <label for="firstname" class="col-sm-4 col-form-label">Flight ID</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" formControlName="flightId" id="flightId">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="lastname" class="col-sm-4 col-form-label">Flight Type ID</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" formControlName="flightTypeId" id="flightName">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
-                <button type="submit" class="btn btn-primary">Save changes</button>
-            </div>
-        </form>
-    </div>
-</ng-template>
-
-<!--Create Modal-->
-<ng-template #createModal let-modal>
-    <div class="modal-header">
-        <h5 class="modal-title">Create Flight</h5>
-        <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-
-    <div class="modal-body">
-        <form [formGroup]="createFormFlight" (ngSubmit)="onSubmitCreate()">
-            <div class="form-group row">
                 <label for="flightId" class="col-sm-4 col-form-label">Flight ID</label>
                 <div class="col-sm-8">
-                    <input type="number" class="form-control" formControlName="flightId" id="flightId" placeholder="Auto-Generated" readonly>
+                    <input type="number" class="form-control" formControlName="flightId" id="flightId" readonly>
                 </div>
             </div>
             <div class="form-group row">
@@ -137,17 +112,86 @@
             <div class="form-group row">
                 <div class="col">
                     <label class="col-sm-8 col-form-label">Duration:  Hours</label>
-                    <input type="number" class="form-control" value=1 id="hours">
+                    <input [(ngModel)]="hours" [ngModelOptions]="{standalone: true}"  type="number" class="form-control" min=0 value=1 id="hours">
                 </div>
                 <div class="col">
                     <label class="col-sm-4 col-form-label">Minutes</label>
-                    <input type="number" class="form-control" value=1 id="minutes">
+                    <input [(ngModel)]="minutes" [ngModelOptions]="{standalone: true}" type="number" class="form-control" min=0 value=1 id="minutes">
                 </div>
             </div>
             <div class="form-group row">
                 <label class="col-sm-4 col-form-label">Status</label>
                 <div class="col-sm-8">
-                    <input type="number" class="form-control" placeholder="INACTIVE" readonly>
+                    <select class="form-control" formControlName="flightStatus">
+                        <option value="INACTIVE">INACTIVE</option>
+                        <option value="ACTIVE">ACTIVE</option>
+                        <option value="GROUNDED">GROUNDED</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<!--Create Modal-->
+<ng-template #createModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">Create Flight</h5>
+        <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <form [formGroup]="createFormFlight" (ngSubmit)="onSubmitCreate()">
+            <div class="form-group row">
+                <label for="flightId" class="col-sm-4 col-form-label">Flight ID</label>
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" id="flightId" placeholder="Auto-Generated" readonly>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="flightRoute" class="col-sm-4 col-form-label">Route ID</label>
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" value=1 formControlName="flightRoute" id="flightRoute">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="flightAirplane" class="col-sm-4 col-form-label">Airplane ID</label>
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" value=1 formControlName="flightAirplane" id="flightAirplane">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="flightSeatingId" class="col-sm-4 col-form-label">Seating ID</label>
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" value=1 formControlName="flightSeatingId" id="flightSeatingId">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="flightDepartureTime" class="col-sm-4 col-form-label">Departure</label>
+                <div class="col-sm-8">
+                    <input type="datetime-local" class="form-control" formControlName="flightDepartureTime" id="flightDepartureTime">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col">
+                    <label class="col-sm-8 col-form-label">Duration:  Hours</label>
+                    <input [(ngModel)]="hours" [ngModelOptions]="{standalone: true}"  type="number" class="form-control" min=0 value=1 id="hours">
+                </div>
+                <div class="col">
+                    <label class="col-sm-4 col-form-label">Minutes</label>
+                    <input [(ngModel)]="minutes" [ngModelOptions]="{standalone: true}" type="number" class="form-control" min=0 value=1 id="minutes">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-4 col-form-label">Status</label>
+                <div class="col-sm-8">
+                    <input type="number" class="form-control" formControlName="flightStatus" placeholder="INACTIVE" readonly>
                 </div>
             </div>
             <div class="modal-footer">
