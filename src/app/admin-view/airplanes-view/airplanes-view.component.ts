@@ -46,20 +46,12 @@ export class AirplanesViewComponent implements OnInit {
 
     @HostListener('input') oninput() {
       this.getAllAirplanes();
-      this.editFormAirplane = this.fb.group(this.formData);
-      this.createFormAirplane = this.fb.group(this.formData);
   }
 
   ngOnInit(): void {
     this.getAllAirplanes();
-    this.editFormAirplane = this.fb.group({
-      airplaneId: [''],
-      airplaneTypeId: ['']
-    });
-    this.createFormAirplane = this.fb.group({
-      airplaneId: [''],
-      airplaneTypeId: 1
-    });
+    this.editFormAirplane = this.fb.group(this.formData);
+    this.createFormAirplane = this.fb.group(this.formData);
   }
 
   searchItems() {
@@ -81,8 +73,9 @@ returnToDashboard(){
 
   getAllAirplanes(){
     this.loading = true;
-    this.airplanesService.getbyId().subscribe(
+    this.airplanesService.getAllAirplanes().subscribe(
       response => {
+        console.log(response);
         this.loading = false;
         this.mdbTable.setDataSource(response);
         this.airplaneList = this.mdbTable.getDataSource();
@@ -160,7 +153,8 @@ returnToDashboard(){
       this.createFormAirplane.reset();
       this.refreshTable()
     }, error => {
-      this.errorMessage = error.error;
+      console.log(error.error)
+      this.errorMessage = error.error.error;
     }
   )
   }
@@ -172,7 +166,7 @@ returnToDashboard(){
       this.editFormAirplane.reset();
       this.refreshTable()
     }, error => {
-      this.errorMessage = error.error;
+      this.errorMessage = error.error.error;
     }
   )
   }
@@ -184,7 +178,7 @@ returnToDashboard(){
       this.modalService.dismissAll();
       console.log(data)
     }, error => {
-      console.log(error)
+      this.errorMessage = error.error.error;
     }
   )
   } 

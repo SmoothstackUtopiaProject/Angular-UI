@@ -11,7 +11,7 @@ export class AirplanesService {
 
   constructor(private http: HttpClient) { }
 
-  getAllAirplanes() : Observable<any>{
+  getAllAirplanes(){
     return this.http.get<Airplane[]>(environment.airplanesEndpoint)
   }
 

@@ -32,7 +32,13 @@ export class LoginComponent implements OnInit {
     this.auth.login(this.userEmail, this.userPassword)
     .subscribe(
       data=>{
-        this.router.navigate(['dashboard']);
+        if(data.userRole !== 'ADMIN'){
+          this.errorMessage = 'Login with administrator privileges only'
+          this.loading = false;
+        }else{
+          sessionStorage.setItem('token', data.userToken);
+          this.router.navigate(['dashboard']);
+        }
       },
       error => {
         this.errorMessage = "Invalid email or password";

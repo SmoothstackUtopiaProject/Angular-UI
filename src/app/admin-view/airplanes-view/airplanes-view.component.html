@@ -26,15 +26,21 @@
         <thead>
             <tr>
                 <th class="th-sm">
-                    <a (click)="sortBy('airportIataId')">ID
+                    <a (click)="sortBy('airplaneId')">ID
 
                     </a>
                 </th>
                 <th class="th-lg">
-                    <a (click)="sortBy('airportName')">Type ID
+                    <a (click)="sortBy('airplaneTypeId')">Type ID
 
                     </a>
                 </th>
+                <th class="th-lg">
+                    <a (click)="sortBy('airplaneTypeName')">Type Name
+
+                    </a>
+                </th>
+
                 <th class="th-sm">
                     Update
                 </th>
@@ -46,7 +52,8 @@
         <tbody>
             <tr *ngFor="let airplane of airplaneList | paginate: {itemsPerPage:10,currentPage:page}">
                 <td scope="row">{{ airplane.airplaneId }}</td>
-                <td scope="row">{{ airplane.airplaneTypeId}}</td>
+                <td scope="row">{{ airplane.airplaneType.airplaneTypeId}}</td>
+                <td scope="row">{{airplane.airplaneType.airplaneTypeName}}</td>
                 <td scope="row">
                     <button (click)="openEditModal(editModal, airplane)" class="btn btn-success">
                         <mat-icon>update</mat-icon>
@@ -113,6 +120,7 @@
     </div>
 
     <div class="modal-body">
+        <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
         <form [formGroup]="createFormAirplane" (ngSubmit)="onSubmitCreate()">
             <div class="form-group row">
                 <label for="firstname" class="col-sm-4 col-form-label">Airplane ID</label>
