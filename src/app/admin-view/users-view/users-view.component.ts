@@ -1,5 +1,5 @@
-import { Component, OnInit, ElementRef, HostListener, AfterViewInit, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { MdbTableDirective, MdbTablePaginationComponent } from 'ng-uikit-pro-standard';
+import { Component, OnInit, ElementRef, HostListener, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { MdbTableDirective} from 'ng-uikit-pro-standard';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'src/app/model/user';
@@ -11,10 +11,9 @@ import { DashboardComponent } from 'src/app/dashboard/dashboard.component';
   templateUrl: './users-view.component.html',
   styleUrls: ['./users-view.component.css']
 })
-export class UsersViewComponent implements OnInit, AfterViewInit{
+export class UsersViewComponent implements OnInit{
 
   @ViewChild(MdbTableDirective, { static: true }) mdbTable!: MdbTableDirective;
-  @ViewChild(MdbTablePaginationComponent, { static: true }) mdbTablePagination!: MdbTablePaginationComponent;
   @ViewChild('row', { static: true }) row!: ElementRef;
 
   user!: User;
@@ -22,21 +21,26 @@ export class UsersViewComponent implements OnInit, AfterViewInit{
   headElements = ['ID', 'First', 'Last', 'Email', 'Phone', 'Role', 'Update', 'Delete', 'Password Recovery'];
   editFormUser!: FormGroup;
   createFormUser!: FormGroup;
+  selected!: User;
   searchText!: string ;
   previous!: string;
-  selected!: User;
+  errorMessage = '';
+  hideMenu!: string | null;
+  page!: any;
+  sorted = false;
+  loading!: boolean;
+  updateTable!: boolean;
+
+
   formData = {
     userId: [''],
     userFirstName: [''],
     userLastName: [''],
     userEmail: [''],
     userPhone: [''],
-    userRole: ['']
+    userRole: [''],
+    userPassword: ['']
   };
-  errorMessage = '';
-  loading!: boolean;
-  hideMenu!: string | null;
-  private sorted = false;
 
 
 
@@ -52,6 +56,7 @@ export class UsersViewComponent implements OnInit, AfterViewInit{
   }
   
   ngOnInit(): void {
+    
     this.getAllUsers();
     this.editFormUser = this.fb.group(this.formData);
     this.createFormUser = this.fb.group(this.formData);
@@ -75,18 +80,31 @@ returnToDashboard(){
 }
 
   getAllUsers(){
-    this.loading = true;
-    this.userService.getAllUsers().subscribe(
-      response =>{
-        this.mdbTable.setDataSource(response);
-        this.userList = this.mdbTable.getDataSource();
-        this.previous = this.mdbTable.getDataSource();
-        return this.loading = false;
-      }, err =>{
-        this.loading = false;
-        console.log(err)
-      }
-    )
+    this.loading = true
+      this.userService.getAllUsers().subscribe(
+        response =>{
+          this.loading = false;
+          this.mdbTable.setDataSource(response);
+          this.userList = this.mdbTable.getDataSource();
+          this.previous = this.mdbTable.getDataSource();
+        }, err =>{
+          console.log(err);
+        }
+        )
+  }
+
+  refreshTable(){
+    this.updateTable = true
+      this.userService.getAllUsers().subscribe(
+        response =>{
+          this.updateTable = false;
+          this.mdbTable.setDataSource(response);
+          this.userList = this.mdbTable.getDataSource();
+          this.previous = this.mdbTable.getDataSource();
+        }, err =>{
+          console.log(err);
+        }
+        )
   }
 
   sortBy(by: string | any): void {
@@ -104,14 +122,6 @@ returnToDashboard(){
     });
 
     this.sorted = !this.sorted;
-  }
-
-  ngAfterViewInit() {
-    this.mdbTablePagination.setMaxVisibleItemsNumberTo(8);
-
-    this.mdbTablePagination.calculateFirstItemIndex();
-    this.mdbTablePagination.calculateLastItemIndex();
-    this.cdRef.detectChanges();
   }
 
   openCreateModal(targetModal:any, user:any) {
@@ -149,26 +159,24 @@ returnToDashboard(){
   onSubmitCreate(){
     this.userService.createUser(this.createFormUser.getRawValue()).subscribe(
       data=>{
-        this.getAllUsers();
         this.modalService.dismissAll();
         this.createFormUser.reset();
-        console.log(data)
+        this.refreshTable()
       }, error => {
-        console.log(error.error.error);
-        this.errorMessage = error.error.error;
+        this.errorMessage = error.error;
       }
     )
   }
 
+
   onSubmitUpdate() {
     this.userService.updateUser(this.editFormUser.getRawValue()).subscribe(
       data=>{
-        this.getAllUsers();
         this.modalService.dismissAll();
         this.editFormUser.reset();
-        console.log(data)
+        this.refreshTable()
       }, error => {
-        console.log(error)
+        this.errorMessage = error.error;
       }
     )
   }
@@ -177,11 +185,10 @@ returnToDashboard(){
     this.userService.deleteUser(this.selected)
     .subscribe(
       data=>{
-        this.getAllUsers();
         this.modalService.dismissAll();
-        console.log(data)
+        this.refreshTable()
       }, error => {
-        console.log(error)
+        this.errorMessage = error.error;
       })
   }
 

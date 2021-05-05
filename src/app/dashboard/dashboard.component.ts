@@ -26,6 +26,7 @@ export class DashboardComponent implements OnInit {
 
   displayView(selected: string) {
     this.currentView = selected;
+    console.log(selected)
     this.hideMenu = true;
   }
 

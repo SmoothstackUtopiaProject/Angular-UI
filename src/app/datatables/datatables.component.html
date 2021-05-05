@@ -1,18 +1,29 @@
-<table id="tableSortExample" mdbTable class="z-depth-1">
-    <thead>
-        <tr>
-            <th *ngFor="let head of headElements; let i = index" aria-controls="tableSortExample" scope="col"
-                [mdbTableSort]="elements" [sortBy]="headElements[i]">{{head | titlecase}}
-
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let el of elements; let i = index">
-            <th scope="row">{{el.id}}</th>
-            <td>{{el.first}}</td>
-            <td>{{el.last}}</td>
-            <td>{{el.handle}}</td>
-        </tr>
-    </tbody>
-</table>
+<div class="container">
+    <table mdbTable #tableEl="mdbTable" class="z-depth-1">
+        <thead>
+            <tr>
+                <th *ngFor="let head of headElements; let i = index" scope="col">{{head}}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let el of elements; let i = index">
+                <th *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"
+                    scope="row">{{el.id}}</th>
+                <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                    {{el.first}}</td>
+                <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">{{el.last}}
+                </td>
+                <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex">
+                    {{el.handle}}</td>
+            </tr>
+        </tbody>
+        <tfoot class="grey lighten-5 w-100">
+            <tr>
+                <td colspan="4">
+                    <mdb-table-pagination [tableEl]="tableEl" [searchDataSource]="elements"></mdb-table-pagination>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
