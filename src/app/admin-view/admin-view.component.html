@@ -1,6 +1,5 @@
 <app-navbar></app-navbar>
 
-<body>
   <div class="wrapper d-flex align-items-stretch">
     <nav id="sidebar">
       <div class="p-4 pt-5 text-center">
@@ -41,11 +40,11 @@
 
       <div *ngIf="currentView === 'USERS'">
         <app-users-view></app-users-view>
+      </div>
       
       <div *ngIf="currentView === 'FLIGHTS'">
         <app-flights-view></app-flights-view>
       </div>
-
+    
     </div>
   </div>
-</body>

@@ -3,6 +3,7 @@ import { Flight } from './../../model/flight';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-flights-view',
@@ -17,11 +18,15 @@ export class FlightsViewComponent implements OnInit {
   editFormFlight!: FormGroup;
   createFormFlight!: FormGroup;
   selectedDelete!: Flight;
+  hours = 0;
+  minutes = 0;
+  duration = this.hours * this.minutes;
   page: number = 1;
   currentSort = "up";
   sortedItem = "";
   loading!: boolean;
   origin: any;
+  
 
   constructor(private flightsService: FlightsService, private fb: FormBuilder, private modalService: NgbModal) { }
 
@@ -29,15 +34,19 @@ export class FlightsViewComponent implements OnInit {
     this.getAllFlights();
     this.editFormFlight = this.fb.group({
       flightId: [''],
-      flightTypeId: ['']
-    });
-    this.createFormFlight = this.fb.group({
-      flightId: [''],
       flightRoute: 1,
       flightAirplane: 1,
       flightDepartureTime: [''],
       flightSeatingId: 1,
-      flightDuration: [''],
+      flightDuration: this.hours * this.minutes,
+      flightStatus: "INACTIVE"
+    });
+    this.createFormFlight = this.fb.group({
+      flightRoute: 1,
+      flightAirplane: 1,
+      flightDepartureTime: [''],
+      flightSeatingId: 1,
+      flightDuration: this.hours * this.minutes,
       flightStatus: "INACTIVE"
     });
   }
@@ -98,6 +107,14 @@ export class FlightsViewComponent implements OnInit {
             : b.flightRoute.routeDestination.airportCityName.localeCompare(a.flightRoute.routeDestination.airportCityName)
         });
       break;
+
+      case "status":
+        flightSorted.sort((a,b) => {
+          return this.currentSort === "up"
+            ? a.flightStatus.localeCompare(b.flightStatus)
+            : b.flightStatus.localeCompare(a.flightStatus)
+        });
+      break;
     }
 
     this.flightList = flightSorted;
@@ -118,6 +135,7 @@ export class FlightsViewComponent implements OnInit {
 
   //TODO - GENERALIZE openModal
   openCreateModal(targetModal:any, flight:any) {
+    this.createFormFlight.patchValue({flightDepartureTime: moment().format("YYYY-MM-DDTHH:mm")});
     this.modalService.open(targetModal, {
      centered: true,
      backdrop: 'static'
@@ -129,10 +147,15 @@ export class FlightsViewComponent implements OnInit {
      centered: true,
      backdrop: 'static'
   });
-   
+    this.hours = Math.floor(flight.flightDuration / 3600);
+    this.minutes = Math.floor((flight.flightDuration % 3600) / 60);
     this.editFormFlight.patchValue({
       flightId: flight.flightId,
-      flightTypeId: flight.flightTypeId
+      flightRoute: flight.flightRoute.routeId,
+      flightAirplane: flight.flightAirplane.airplaneId,
+      flightDepartureTime: moment(flight.flightDepartureTime).format("YYYY-MM-DDTHH:mm").toString(),
+      flightSeatingId: flight.flightSeatingId,
+      flightStatus: flight.flightStatus
     });
   }
 
@@ -146,39 +169,49 @@ export class FlightsViewComponent implements OnInit {
   }
 
   onSubmitCreate(){
+  this.createFormFlight.patchValue({flightDuration: (this.hours * 3600) + (this.minutes * 60)});
   this.flightsService.createFlight(this.createFormFlight.getRawValue()).subscribe(
     data=>{
       this.getAllFlights();
       this.modalService.dismissAll();
       this.createFormFlight.reset();
-      console.log(data)
-    }, error => {
-      console.log(error)
+      console.log(data);
+    }, err => {
+      this.getAllFlights();
+      this.modalService.dismissAll();
+      this.createFormFlight.reset();
+      console.log(err);
     }
   )
   }
 
   onSubmitUpdate() {
+  this.editFormFlight.patchValue({flightDuration: (this.hours * 3600) + (this.minutes * 60)});
   this.flightsService.updateFlight(this.editFormFlight.getRawValue()).subscribe(
     data=>{
       this.getAllFlights();
       this.modalService.dismissAll();
       this.editFormFlight.reset();
-      console.log(data)
+      console.log(data);
     }, error => {
-      console.log(error)
+      this.getAllFlights();
+      this.modalService.dismissAll();
+      this.editFormFlight.reset();
+      console.log(error);
     }
   )
   }
 
   onSubmitDelete() {
-  this.flightsService.deleteFlight(this.selectedDelete).subscribe(
+    this.flightsService.deleteFlight(this.selectedDelete).subscribe(
     data=>{
       this.getAllFlights();
       this.modalService.dismissAll();
-      console.log(data)
-    }, error => {
-      console.log(error)
+      console.log(data);
+    }, err => {
+      this.getAllFlights();
+      this.modalService.dismissAll();
+      console.log(err);
     }
   )
   } 
