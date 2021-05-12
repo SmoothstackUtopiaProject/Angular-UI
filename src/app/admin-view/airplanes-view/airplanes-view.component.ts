@@ -31,7 +31,6 @@ export class AirplanesViewComponent implements OnInit {
   loading!: boolean;
   updateTable!: boolean;
 
-
   formData = {
     airplaneId: [''],
     airplaneTypeId: ['']
