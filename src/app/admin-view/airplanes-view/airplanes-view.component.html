@@ -1,24 +1,52 @@
-<div class="container" *ngIf="loading">
-    <app-loading></app-loading>
-</div>
 
-<div class="container" *ngIf="!loading">
+<app-loading *ngIf="loading"></app-loading>
 
-    <div class="row">
-        <pagination-controls (pageChange) = "page = $event"></pagination-controls>
+<div class="table-responsive" [hidden]="loading">
+    <div class="row nav-search-div">
+        <div class="col-md-8 mx-auto" id='wrap-oder-search'>
+            <div class="md-form">
+                <input type="text" [(ngModel)]="searchText" class="form-control order-1" id="search" mdbInput
+                    placeholder="search" />
+            </div>
+        </div>
+        <div class="col-md-2 mx-auto" id='wrap-oder-create-btn'>
+            <div class="">
+                <button (click)="openCreateModal(createModal, airplane)" class="btn seach-div-btn order-2">add a new
+                    airplane</button>
+            </div>
+        </div>
+        <div class="col-md-2 mx-auto" id='wrap-oder-dashboard'>
+            <div class="">
+                <button (click)="returnToDashboard()" class="btn seach-div-btn order-3">return to dashboard</button>
+            </div>
+        </div>
+
     </div>
-    <table class="table">
+    <table mdbTable #tableEl="mdbTable" id="tableSortExample" class="table table-responsive-md">
+
         <thead>
             <tr>
-                <th>Airplane ID
-                    <button class="btn text-black" (click)="sort('airplaneId')">
-                        ⇅
-                    </button>
+                <th class="th-sm">
+                    <a (click)="sortBy('airplaneId')">ID
+
+                    </a>
                 </th>
-                <th>Type ID
-                    <button class="btn text-black" (click)="sort('airplaneTypeId')">
-                        ⇅
-                    </button>
+                <th class="th-lg">
+                    <a (click)="sortBy('airplaneTypeId')">Type ID
+
+                    </a>
+                </th>
+                <th class="th-lg">
+                    <a (click)="sortBy('airplaneTypeName')">Type Name
+
+                    </a>
+                </th>
+
+                <th class="th-sm">
+                    Update
+                </th>
+                <th class="th-sm">
+                    Delete
                 </th>
                 <th>Type Name
                     <button class="btn text-black" (click)="sort('airplaneTypeName')">
@@ -32,18 +60,34 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let airplane of airplaneList | orderBy: key: reverse | paginate: {itemsPerPage:10,currentPage:page}">
-                <td>{{airplane.airplaneId}}</td>
-                <td>{{airplane.airplaneType.airplaneTypeId}}</td>
-                <td>{{airplane.airplaneType.airplaneTypeName}}</td>
-                <td><button (click)="openEditModal(editModal, airplane)" class="btn btn-success">Update</button></td>
-                <td><button (click)="openDeleteModal(deleteModal, airplane)" class="btn btn-warning">Delete</button>
+            <tr *ngFor="let airplane of airplaneList | paginate: {itemsPerPage:10,currentPage:page}">
+                <td scope="row">{{ airplane.airplaneId }}</td>
+                <td scope="row">{{ airplane.airplaneType.airplaneTypeId}}</td>
+                <td scope="row">{{airplane.airplaneType.airplaneTypeName}}</td>
+                <td scope="row">
+                    <button (click)="openEditModal(editModal, airplane)" class="btn btn-success">
+                        <mat-icon>update</mat-icon>
+                    </button>
+                </td>
+                <td scope="row">
+                    <button class="btn btn-danger" (click)="openDeleteModal(deleteModal, airplane)">
+                        <mat-icon>delete_forever</mat-icon>
+                    </button>
+                </td>
             </tr>
         </tbody>
-        
 
     </table>
+
+
+    <div class="pagination-div">
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </div>
 </div>
+
+
+
+
 
 <!--Edit Modal-->
 <ng-template #editModal let-modal>
@@ -86,17 +130,20 @@
     </div>
 
     <div class="modal-body">
+        <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
         <form [formGroup]="createFormAirplane" (ngSubmit)="onSubmitCreate()">
             <div class="form-group row">
                 <label for="firstname" class="col-sm-4 col-form-label">Airplane ID</label>
                 <div class="col-sm-8">
-                    <input type="number" class="form-control" formControlName="airplaneId" id="airplaneId" placeholder="Auto-Generated" readonly>
+                    <input type="number" class="form-control" formControlName="airplaneId" id="airplaneId"
+                        placeholder="Auto-Generated" readonly>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="lastname" class="col-sm-4 col-form-label">Airplane Type ID</label>
                 <div class="col-sm-8">
-                    <input type="number" class="form-control" value=1 formControlName="airplaneTypeId" id="airplaneTypeId">
+                    <input type="number" class="form-control" value=1 formControlName="airplaneTypeId"
+                        id="airplaneTypeId">
                 </div>
             </div>
             <div class="modal-footer">

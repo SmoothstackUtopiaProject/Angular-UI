@@ -1,21 +1,21 @@
 <app-loading *ngIf="loading"></app-loading>
 
-<div class="table-responsive">
+<div class="table-responsive" [hidden]="loading">
     <div class="row nav-search-div">
-        <div class="col-md-8 mx-auto">
+        <div class="col-md-8 mx-auto" id='wrap-oder-search'>
             <div class="md-form">
-                <input *ngIf="!loading" type="text" [(ngModel)]="searchText" class="form-control order-1" id="search"
-                    mdbInput placeholder="search" />
+                <input type="text" [(ngModel)]="searchText" class="form-control order-1" id="search" mdbInput
+                    placeholder="search" />
             </div>
         </div>
-
-        <div class="col-md-2 mx-auto">
-            <div class="md-form">
-                <button class="btn seach-div-btn order-2">add a new user</button>
+        <div class="col-md-2 mx-auto" id='wrap-oder-create-btn'>
+            <div class="">
+                <button (click)="openCreateModal(createModal, user)" class="btn seach-div-btn order-2">add a new
+                    user</button>
             </div>
         </div>
-        <div class="col-md-2 mx-auto">
-            <div class="md-form">
+        <div class="col-md-2 mx-auto" id='wrap-oder-dashboard'>
+            <div class="">
                 <button (click)="returnToDashboard()" class="btn seach-div-btn order-3">return to dashboard</button>
             </div>
         </div>
@@ -27,12 +27,11 @@
             <tr>
                 <th class="th-sm">
                     <a (click)="sortBy('userId')">ID
-                        <mdb-icon fas icon="sort" class="ml-1"></mdb-icon>
+                        <mdb-icon fas icon="sort"></mdb-icon>
                     </a>
                 </th>
                 <th class="th-lg">
                     <a (click)="sortBy('userFirstName')">First Name
-                        <mdb-icon fas icon="sort" class="ml-1"></mdb-icon>
                     </a>
                 </th>
                 <th class="th-lg">
@@ -62,47 +61,29 @@
                     Delete
                 </th>
                 <th class="th-lg">
-                    Reset Password
+                    Password Recovery
                 </th>
             </tr>
         </thead>
-
-
-        <!-- <thead>
-            <tr>
-                <th *ngFor="let head of headElements; let i = index" aria-controls="tableSortExample" scope="col"
-                    [mdbTableSort]="userList" [sortBy]="headElements[i]">{{head | titlecase}}
-                </th>
-            </tr>
-        </thead> -->
         <tbody>
-            <tr *ngFor="let user of userList; let i = index">
-                <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"
-                    scope="row">{{ user.userId }}</td>
-                <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"
-                    scope="row">{{ user.userFirstName }}</td>
-                <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"
-                    scope="row">{{ user.userLastName }}</td>
-                <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"
-                    scope="row"> {{ user.userEmail }}</td>
-                <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"
-                    scope="row">{{ user.userPhone }}</td>
-                <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"
-                    scope="row">{{ user.userRole }}</td>
-                <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"
-                    scope="row">
+            <tr *ngFor="let user of userList | paginate: {itemsPerPage:10,currentPage:page}">
+                <td scope="row">{{ user.userId }}</td>
+                <td scope="row">{{ user.userFirstName }}</td>
+                <td scope="row">{{ user.userLastName }}</td>
+                <td scope="row"> {{ user.userEmail }}</td>
+                <td scope="row">{{ user.userPhone }}</td>
+                <td scope="row">{{ user.userRole }}</td>
+                <td scope="row">
                     <button (click)="openEditModal(editModal, user)" class="btn btn-success">
                         <mat-icon>update</mat-icon>
                     </button>
                 </td>
-                <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex"
-                    scope="row">
+                <td scope="row">
                     <button class="btn btn-danger" (click)="openDeleteModal(deleteModal, user)">
                         <mat-icon>delete_forever</mat-icon>
                     </button>
                 </td>
-                <td *ngIf="i+1 >= mdbTablePagination.firstItemIndex && i < mdbTablePagination.lastItemIndex" scope="row"
-                    class="pwd-recovery-td">
+                <td scope="row" class="pwd-recovery-td">
 
                     <button class="btn btn-warning ">
                         <mat-icon>restore_page</mat-icon>
@@ -110,12 +91,12 @@
                 </td>
             </tr>
         </tbody>
+
     </table>
 
-    <div class="peg">
-        <mdb-table-pagination class="peg" [tableEl]="tableEl" [searchDataSource]="userList">
-        </mdb-table-pagination>
 
+    <div class="pagination-div">
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
     </div>
 </div>
 
@@ -192,5 +173,68 @@
             <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
             <button type="submit" class="btn btn-primary" (click)="onSubmitDelete()">Yes/Delete</button>
         </div>
+    </div>
+</ng-template>
+
+
+<ng-template #createModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title">Create user</h5>
+        <button type="button" class="close" (click)="modal.dismiss()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="alert alert-danger" role="alert" *ngIf="errorMessage">{{errorMessage}}</div>
+        <form [formGroup]="createFormUser" (ngSubmit)="onSubmitCreate()">
+            <div class="form-group row">
+                <label for="userFirstName" class="col-sm-4 col-form-label">First Name</label>
+                <div class="col-sm-8">
+                    <input matInput type="text" class="form-control" formControlName="userFirstName" id="userFirstName">
+
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="userLastName" class="col-sm-4 col-form-label">Last Name</label>
+                <div class="col-sm-8">
+                    <input matInput type="text" class="form-control" formControlName="userLastName" id="userLastName">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="userEmail" class="col-sm-4 col-form-label">Email</label>
+                <div class="col-sm-8">
+                    <input matInput type="text" class="form-control" formControlName="userEmail" id="userEmail">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="userPhone" class="col-sm-4 col-form-label">Phone</label>
+                <div class="col-sm-8">
+                    <input matInput type="text" class="form-control" formControlName="userPhone" id="userPhone">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="userRole" class="col-sm-4 col-form-label">Role</label>
+                <div class="col-sm-8">
+                    <select matInput class="form-control" formControlName="userRole" id="userRole">
+                        <option value="USER">USER</option>
+                        <option value="AGENT">AGENT</option>
+                        <option value="ADMIN">ADMIN</option>
+                    </select>
+
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="userPassword" class="col-sm-4 col-form-label">Password</label>
+                <div class="col-sm-8">
+                    <input type="text" placeholder="Smoothstack2021!" class="form-control"
+                        formControlName="userPassword" readonly>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
+                <button type="submit" class="btn btn-primary">Add</button>
+            </div>
+        </form>
     </div>
 </ng-template>

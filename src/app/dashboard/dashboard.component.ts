@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthenticationService } from '../service/authentication/authentication.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,14 +20,19 @@ export class DashboardComponent implements OnInit {
 
   hideMenu = false;
 
-  constructor() { }
+  constructor(
+    private router: Router,
+    private auth: AuthenticationService) { }
 
   ngOnInit(): void {
-
+    if(!this.auth.getAuthenticatedUser()){
+      this.router.navigate(['login']);
+    }
   }
 
   displayView(selected: string) {
     this.currentView = selected;
+    console.log(selected)
     this.hideMenu = true;
   }
 

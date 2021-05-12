@@ -7,27 +7,31 @@
                 Book a flight</div>
         </div>
         <div class="row">
-            <div (click)=displayView(users) class="col btn">Users</div>
-            <div class="col btn">Routes</div>
+            <div (click)="displayView(users)" class="col btn">Users</div>
+            <div (click)="displayView(routes)" class="col btn">Routes</div>
         </div>
         <div class="row">
-            <div (click)=displayView(airports) class="col btn">Airports</div>
-            <div class="col btn">Airplanes</div>
+            <div (click)="displayView(airports)" class="col btn">Airports</div>
+            <div (click)="displayView(airplanes)" class="col btn">Airplanes</div>
         </div>
         <div class="row">
-            <div (click)=displayView(flights) class="col btn">Flights</div>
-            <div class="col btn">Flights</div>
+            <div (click)="displayView(flights)" class="col btn">Flights</div>
+            <div (click)="displayView(bookings)" class="col btn">Bookings</div>
         </div>
     </div>
 
     <div *ngIf="currentView === 'USERS'">
         <app-users-view></app-users-view>
     </div>
-
+    <div *ngIf="currentView === 'ROUTES'">
+        <app-routes-view></app-routes-view>
+    </div>
     <div *ngIf="currentView === 'AIRPORTS'">
         <app-airports-view></app-airports-view>
     </div>
-
+    <div *ngIf="currentView === 'AIRPLANES'">
+        <app-airplanes-view></app-airplanes-view>
+    </div>
     <div *ngIf="currentView === 'FLIGHTS'">
         <app-flights-view></app-flights-view>
     </div>

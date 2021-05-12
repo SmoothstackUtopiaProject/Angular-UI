@@ -54,9 +54,4 @@ describe('AirplanesViewComponent', () => {
     expect(spy).toHaveBeenCalled();
   })
 
-  it('should store airplanes in component on start', () => {
-    spyOn(service, 'getAllAirplanes').and.returnValue(of(fakeAirplanes));
-    component.ngOnInit();
-    expect(component.airplaneList.length).toEqual(3);
-  })
 });

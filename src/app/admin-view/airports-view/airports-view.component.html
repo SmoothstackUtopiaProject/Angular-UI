@@ -1,48 +1,79 @@
-<div class="container" *ngIf="loading">
-    <app-loading></app-loading>
-</div>
+<app-loading *ngIf="loading"></app-loading>
 
-<div class="container" *ngIf="!loading">
+<div class="table-responsive" [hidden]="loading">
+    <div class="row nav-search-div">
+        <div class="col-md-8 mx-auto" id='wrap-oder-search'>
+            <div class="md-form">
+                <input type="text" [(ngModel)]="searchText" class="form-control order-1" id="search" mdbInput
+                    placeholder="search" />
+            </div>
+        </div>
+        <div class="col-md-2 mx-auto" id='wrap-oder-create-btn'>
+            <div class="">
+                <button (click)="openCreateModal(createModal, airport)" class="btn seach-div-btn order-2">add a new
+                    airport</button>
+            </div>
+        </div>
+        <div class="col-md-2 mx-auto" id='wrap-oder-dashboard'>
+            <div class="">
+                <button (click)="returnToDashboard()" class="btn seach-div-btn order-3">return to dashboard</button>
+            </div>
+        </div>
 
-    <table class="table">
+    </div>
+    <table mdbTable #tableEl="mdbTable" id="tableSortExample" class="table table-responsive-md">
+
         <thead>
             <tr>
-                <th>IATA ID
-                    <button class="btn text-black" (click)="onSortChange('airportIataId')">
-                        ⇅
-                    </button>
+                <th class="th-sm">
+                    <a (click)="sortBy('airportIataId')">IATA
+
+                    </a>
                 </th>
-                <th>Name
-                    <button class="btn text-black" (click)="onSortChange('airportName')">
-                        ⇅
-                    </button>
+                <th class="th-lg">
+                    <a (click)="sortBy('airportName')">Airport Name
+
+                    </a>
                 </th>
-                <th>City
-                    <button class="btn text-black" (click)="onSortChange('airportCityName')">
-                        ⇅
-                    </button>
+                <th class="th-lg">
+                    <a (click)="sortBy('airportCityName')">City
+
+                    </a>
                 </th>
-                <th>
-                    <button (click)="openCreateModal(createModal, airport)" class="btn btn-primary ml-5">Add
-                        Airport</button>
+                <th class="th-sm">
+                    Update
+                </th>
+                <th class="th-sm">
+                    Delete
                 </th>
             </tr>
         </thead>
         <tbody>
-            <!--   for (Todo todo: todos) {  -->
-            <tr *ngFor="let airport of airportList">
-                <td>{{airport.airportIataId}}</td>
-                <td>{{airport.airportName}}</td>
-                <td>{{airport.airportCityName}}</td>
-                <td><button (click)="openEditModal(editModal, airport)" class="btn btn-success">Update</button></td>
-                <td><button (click)="openDeleteModal(deleteModal, airport)" class="btn btn-warning">Delete</button>
+            <tr *ngFor="let airport of airportList | paginate: {itemsPerPage:10,currentPage:page}">
+                <td scope="row">{{ airport.airportIataId }}</td>
+                <td scope="row">{{ airport.airportName }}</td>
+                <td scope="row">{{ airport.airportCityName}}</td>
+                <td scope="row">
+                    <button (click)="openEditModal(editModal, airport)" class="btn btn-success">
+                        <mat-icon>update</mat-icon>
+                    </button>
+                </td>
+                <td scope="row">
+                    <button class="btn btn-danger" (click)="openDeleteModal(deleteModal, airport)">
+                        <mat-icon>delete_forever</mat-icon>
+                    </button>
                 </td>
             </tr>
-            <!-- } -->
         </tbody>
 
     </table>
+
+
+    <div class="pagination-div">
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </div>
 </div>
+
 
 <ng-template #editModal let-modal>
     <div class="modal-header">
@@ -130,7 +161,7 @@
     </div>
 
     <div class="modal-body">
-        <h3>Are you sure you want to delete {{selectedDelete.airportIataId}} Airport? </h3>
+        <h3>Are you sure you want to delete {{selected.airportIataId}} Airport? </h3>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
             <button type="submit" class="btn btn-primary" (click)="onSubmitDelete()">Yes/Delete</button>

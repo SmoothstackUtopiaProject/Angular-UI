@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, HostListener, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { MdbTableDirective} from 'ng-uikit-pro-standard';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Airport } from 'src/app/model/airport';
 import { AirportsService } from 'src/app/service/airports/airports.service';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { DashboardComponent } from 'src/app/dashboard/dashboard.component';
 
 @Component({
   selector: 'app-airports-view',
@@ -11,87 +13,107 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AirportsViewComponent implements OnInit {
 
+  @ViewChild(MdbTableDirective, { static: true }) mdbTable!: MdbTableDirective;
+  @ViewChild('row', { static: true }) row!: ElementRef;
+
   airport!: Airport;
   airportList: Airport[] =[];
   editFormAirport!: FormGroup;
   createFormAirport!: FormGroup;
-  selectedDelete!: Airport;
-  currentSort = "up";
-  sortedItem = "";
-  errorMessage!: '';
+  selected!: Airport;
+  searchText!: string ;
+  previous!: string;
+  errorMessage = '';
+  hideMenu!: string | null;
+  page!: any;
+  sorted = false;
   loading!: boolean;
+  updateTable!: boolean;
 
-  constructor(private airportService: AirportsService, private fb: FormBuilder, private modalService: NgbModal) { }
+  formData = {
+    airportIataId: [''],
+    airportName: [''],
+    airportCityName: ['']
+  };
+
+  constructor(
+    private airportService: AirportsService, 
+    private fb: FormBuilder, 
+    private modalService: NgbModal,
+    private dashboard: DashboardComponent) { }
+
+  @HostListener('input') oninput() {
+    this.searchItems();
+}
 
   ngOnInit() {
     this.getAllAirports();
-    this.editFormAirport = this.fb.group({
-      airportIataId: [''],
-      airportName: [''],
-      airportCityName: ['']
-    });
-    this.createFormAirport = this.fb.group({
-      airportIataId: [''],
-      airportName: [''],
-      airportCityName: ['']
-    });
+    this.editFormAirport = this.fb.group(this.formData);
+    this.createFormAirport = this.fb.group(this.formData);
 
   }
 
-  onSortChange = (sortedItem : string) => {
-    let nextSort;
-
-    if(this.currentSort === "down") nextSort = "up";
-    else nextSort = "down";
-
-    this.currentSort = nextSort;
-    this.sortedItem = sortedItem;
-    this.sortList();
-  }
-
-  sortList() {
-    let airportSorted = this.airportList;
-
-    switch(this.sortedItem) {
-      case "airportIataId":
-        airportSorted.sort((a,b) => {
-          return this.currentSort === "up"
-            ? a.airportIataId.localeCompare(b.airportIataId)
-            : b.airportIataId.localeCompare(a.airportIataId)
-        });
-      break;
-
-      case "airportName":
-        airportSorted.sort((a,b) => {
-          return this.currentSort === "up"
-            ? a.airportName.localeCompare(b.airportName)
-            : b.airportName.localeCompare(a.airportName)
-        });
-      break;
-
-      case "airportCityName":
-        airportSorted.sort((a,b) => {
-          return this.currentSort === "up"
-            ? a.airportCityName.localeCompare(b.airportCityName)
-            : b.airportCityName.localeCompare(a.airportCityName)
-        });
-      break;
+  searchItems() {
+    const prev = this.mdbTable.getDataSource();
+    if (!this.searchText) {
+        this.mdbTable.setDataSource(this.previous);
+        this.airportList = this.mdbTable.getDataSource();
     }
+    if (this.searchText) {
+        this.airportList = this.mdbTable.searchLocalDataBy(this.searchText);
+        this.mdbTable.setDataSource(prev);
+    }
+}
 
-    this.airportList = airportSorted;
-  }
-
+returnToDashboard(){
+  this.dashboard.returnToDashboard();
+}
 
   getAllAirports(){
     this.loading = true;
     this.airportService.getAllAirports().subscribe(
       response => {
-        this.airportList = response;
         this.loading = false;
-        return response;
+        this.mdbTable.setDataSource(response);
+        this.airportList = this.mdbTable.getDataSource();
+        this.previous = this.mdbTable.getDataSource();
+      }, err =>{
+        console.log(err);
       }
     )
   }
+
+  refreshTable(){
+    this.updateTable = true
+    this.airportService.getAllAirports().subscribe(
+      response => {
+        this.loading = false;
+        this.mdbTable.setDataSource(response);
+        this.airportList = this.mdbTable.getDataSource();
+        this.previous = this.mdbTable.getDataSource();
+      }, err =>{
+        console.log(err);
+      }
+    )
+  }
+
+  sortBy(by: string | any): void {
+    console.log(this.airportList)
+
+    this.airportList.sort((a: any, b: any) => {
+      if (a[by] < b[by]) {
+        return this.sorted ? 1 : -1;
+      }
+      if (a[by] > b[by]) {
+        return this.sorted ? -1 : 1;
+      }
+
+      return 0;
+    });
+
+    this.sorted = !this.sorted;
+  }
+
 
   openCreateModal(targetModal:any, airport:any) {
     this.modalService.open(targetModal, {
@@ -119,44 +141,42 @@ export class AirportsViewComponent implements OnInit {
      backdrop: 'static'
     });
   
-    this.selectedDelete = airport;
+    this.selected = airport;
   }
 
   onSubmitCreate(){
     this.airportService.createAirport(this.createFormAirport.getRawValue()).subscribe(
       data=>{
-        this.getAllAirports();
         this.modalService.dismissAll();
         this.createFormAirport.reset();
-        console.log(data)
+        this.refreshTable()
       }, error => {
-        console.log(error.error.error);
-        this.errorMessage = error.error.error;
+        this.errorMessage = error.error;
       }
     )
   }
 
+
+
   onSubmitUpdate() {
     this.airportService.updateAirport(this.editFormAirport.getRawValue()).subscribe(
       data=>{
-        this.getAllAirports();
         this.modalService.dismissAll();
         this.editFormAirport.reset();
-        console.log(data)
+        this.refreshTable()
       }, error => {
-        console.log(error)
+        this.errorMessage = error.error;
       }
     )
   }
   
   onSubmitDelete() {
-    this.airportService.deleteAirport(this.selectedDelete).subscribe(
+    this.airportService.deleteAirport(this.selected).subscribe(
       data=>{
-        this.getAllAirports();
         this.modalService.dismissAll();
-        console.log(data)
+        this.refreshTable()
       }, error => {
-        console.log(error)
+        this.errorMessage = error.error;
       }
     )
   }

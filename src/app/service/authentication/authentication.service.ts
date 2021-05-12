@@ -30,30 +30,30 @@ export class AuthenticationService {
     .pipe(
       map(
         data=>{
-          sessionStorage.setItem(AUTHENTICATED_USER, data.userFirstName);
-          sessionStorage.setItem(TOKEN, basicAuthHeaderString);
+          localStorage.setItem(AUTHENTICATED_USER, data.userFirstName);
+          localStorage.setItem(TOKEN, basicAuthHeaderString);
           return data;
         }
       )
     )
   }
   getAuthenticatedUser() {
-    return sessionStorage.getItem(AUTHENTICATED_USER)
+    return localStorage.getItem(AUTHENTICATED_USER)
   }
 
   getAuthenticatedToken() {
     if(this.getAuthenticatedUser()){
-      return sessionStorage.getItem(TOKEN)
+      return localStorage.getItem(TOKEN)
     } else return null;
   }
   isUserLoggedIn() {
-    let user = sessionStorage.getItem(AUTHENTICATED_USER)
+    let user = localStorage.getItem(AUTHENTICATED_USER)
     return !(user === null)
   }
 
   logout(){
-    sessionStorage.removeItem(AUTHENTICATED_USER)
-    sessionStorage.removeItem(TOKEN)
+    localStorage.removeItem(AUTHENTICATED_USER)
+    localStorage.removeItem(TOKEN)
   }
 
 }
