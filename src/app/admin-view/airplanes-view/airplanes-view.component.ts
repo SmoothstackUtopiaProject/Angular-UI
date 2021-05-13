@@ -1,19 +1,23 @@
-import { Component, OnInit, ElementRef, HostListener, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { MdbTableDirective} from 'ng-uikit-pro-standard';
+import {
+  Component,
+  OnInit,
+  ElementRef,
+  HostListener,
+  ViewChild,
+} from '@angular/core';
+import { MdbTableDirective } from 'ng-uikit-pro-standard';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { AirplanesService } from './../../service/airplanes/airplanes.service';
 import { Airplane } from './../../model/airplane';
 import { DashboardComponent } from 'src/app/dashboard/dashboard.component';
 
-
 @Component({
   selector: 'app-airplanes-view',
   templateUrl: './airplanes-view.component.html',
-  styleUrls: ['./airplanes-view.component.css']
+  styleUrls: ['./airplanes-view.component.css'],
 })
 export class AirplanesViewComponent implements OnInit {
-
   @ViewChild(MdbTableDirective, { static: true }) mdbTable!: MdbTableDirective;
   @ViewChild('row', { static: true }) row!: ElementRef;
 
@@ -22,7 +26,7 @@ export class AirplanesViewComponent implements OnInit {
   editFormAirplane!: FormGroup;
   createFormAirplane!: FormGroup;
   selected!: Airplane;
-  searchText!: string ;
+  searchText!: string;
   previous!: string;
   errorMessage = '';
   hideMenu!: string | null;
@@ -33,18 +37,18 @@ export class AirplanesViewComponent implements OnInit {
 
   formData = {
     airplaneId: [''],
-    airplaneTypeId: ['']
+    airplaneTypeId: [''],
   };
 
-
   constructor(
-    private airplanesService: AirplanesService, 
-    private fb: FormBuilder, 
+    private airplanesService: AirplanesService,
+    private fb: FormBuilder,
     private modalService: NgbModal,
-    private dashboard: DashboardComponent) { }
+    private dashboard: DashboardComponent
+  ) {}
 
-    @HostListener('input') oninput() {
-      this.getAllAirplanes();
+  @HostListener('input') oninput() {
+    this.getAllAirplanes();
   }
 
   ngOnInit(): void {
@@ -56,58 +60,81 @@ export class AirplanesViewComponent implements OnInit {
   searchItems() {
     const prev = this.mdbTable.getDataSource();
     if (!this.searchText) {
-        this.mdbTable.setDataSource(this.previous);
-        this.airplaneList = this.mdbTable.getDataSource();
+      this.mdbTable.setDataSource(this.previous);
+      this.airplaneList = this.mdbTable.getDataSource();
     }
     if (this.searchText) {
-        this.airplaneList = this.mdbTable.searchLocalDataBy(this.searchText);
-        this.mdbTable.setDataSource(prev);
+      this.airplaneList = this.mdbTable.searchLocalDataBy(this.searchText);
+      this.mdbTable.setDataSource(prev);
     }
-}
+  }
 
-returnToDashboard(){
-  this.dashboard.returnToDashboard();
-}
+  returnToDashboard() {
+    this.dashboard.returnToDashboard();
+  }
 
-
-  getAllAirplanes(){
+  getAllAirplanes() {
     this.loading = true;
     this.airplanesService.getAllAirplanes().subscribe(
-      response => {
+      (response) => {
         console.log(response);
         this.loading = false;
         this.mdbTable.setDataSource(response);
         this.airplaneList = this.mdbTable.getDataSource();
         this.previous = this.mdbTable.getDataSource();
-      }, err =>{
+      },
+      (err) => {
         console.log(err);
       }
-    )
+    );
   }
 
-  refreshTable(){
-    this.updateTable = true
+  refreshTable() {
+    this.updateTable = true;
     this.airplanesService.getbyId().subscribe(
-      response => {
+      (response) => {
         this.loading = false;
         this.mdbTable.setDataSource(response);
         this.airplaneList = this.mdbTable.getDataSource();
         this.previous = this.mdbTable.getDataSource();
-      }, err =>{
+      },
+      (err) => {
         console.log(err);
       }
-    )
+    );
   }
 
   sortBy(by: string | any): void {
-    console.log(this.airplaneList)
-
-    this.airplaneList.sort((a: any, b: any) => {
-      if (a[by] < b[by]) {
-        return this.sorted ? 1 : -1;
-      }
-      if (a[by] > b[by]) {
-        return this.sorted ? -1 : 1;
+    this.airplaneList.sort((a: Airplane, b: Airplane) => {
+      switch (by) {
+        case 'airplaneId':
+          if (a.airplaneId < b.airplaneId) {
+            return this.sorted ? 1 : -1;
+          }
+          if (a.airplaneId > b.airplaneId) {
+            return this.sorted ? -1 : 1;
+          }
+          break;
+        case 'airplaneTypeId':
+          if (a.airplaneType.airplaneTypeId < b.airplaneType.airplaneTypeId) {
+            return this.sorted ? 1 : -1;
+          }
+          if (a.airplaneType.airplaneTypeId > b.airplaneType.airplaneTypeId) {
+            return this.sorted ? -1 : 1;
+          }
+          break;
+        case 'airplaneTypeName':
+          if (
+            a.airplaneType.airplaneTypeName < b.airplaneType.airplaneTypeName
+          ) {
+            return this.sorted ? 1 : -1;
+          }
+          if (
+            a.airplaneType.airplaneTypeName > b.airplaneType.airplaneTypeName
+          ) {
+            return this.sorted ? -1 : 1;
+          }
+          break;
       }
 
       return 0;
@@ -116,70 +143,75 @@ returnToDashboard(){
     this.sorted = !this.sorted;
   }
 
-
-  openCreateModal(targetModal:any, airplane:any) {
+  openCreateModal(targetModal: any, airplane: any) {
     this.modalService.open(targetModal, {
-     centered: true,
-     backdrop: 'static'
-    });
-   }
-
-  openEditModal(targetModal:any, airplane:any) {
-    this.modalService.open(targetModal, {
-     centered: true,
-     backdrop: 'static'
-  });
-   
-    this.editFormAirplane.patchValue({
-      airplaneId: airplane.airplaneId,
-      airplaneTypeId: airplane.airplaneTypeId
+      centered: true,
+      backdrop: 'static',
     });
   }
 
-  openDeleteModal(targetModal:any, airplane:any) {
+  openEditModal(targetModal: any, airplane: Airplane) {
     this.modalService.open(targetModal, {
-     centered: true,
-     backdrop: 'static'
+      centered: true,
+      backdrop: 'static',
+    });
+
+    this.editFormAirplane.patchValue({
+      airplaneId: airplane.airplaneId,
+      airplaneTypeId: airplane.airplaneType.airplaneTypeId,
+    });
+  }
+
+  openDeleteModal(targetModal: any, airplane: any) {
+    this.modalService.open(targetModal, {
+      centered: true,
+      backdrop: 'static',
     });
 
     this.selected = airplane;
   }
 
-  onSubmitCreate(){
-  this.airplanesService.createAirplane(this.createFormAirplane.getRawValue()).subscribe(
-    data=>{
-      this.modalService.dismissAll();
-      this.createFormAirplane.reset();
-      this.refreshTable()
-    }, error => {
-      console.log(error.error)
-      this.errorMessage = error.error.error;
-    }
-  )
+  onSubmitCreate() {
+    this.airplanesService
+      .createAirplane(this.createFormAirplane.getRawValue())
+      .subscribe(
+        (data) => {
+          this.modalService.dismissAll();
+          this.createFormAirplane.reset();
+          this.refreshTable();
+        },
+        (error) => {
+          console.log(error.error);
+          this.errorMessage = error.error.error;
+        }
+      );
   }
 
   onSubmitUpdate() {
-  this.airplanesService.updateAirplane(this.editFormAirplane.getRawValue()).subscribe(
-    data=>{
-      this.modalService.dismissAll();
-      this.editFormAirplane.reset();
-      this.refreshTable()
-    }, error => {
-      this.errorMessage = error.error.error;
-    }
-  )
+    console.log(this.editFormAirplane.getRawValue());
+    this.airplanesService
+      .updateAirplane(this.editFormAirplane.getRawValue())
+      .subscribe(
+        (data) => {
+          this.modalService.dismissAll();
+          this.editFormAirplane.reset();
+          this.refreshTable();
+        },
+        (error) => {
+          this.errorMessage = error.error.error;
+        }
+      );
   }
 
   onSubmitDelete() {
-  this.airplanesService.deleteAirplane(this.selected).subscribe(
-    data=>{
-      this.getAllAirplanes();
-      this.modalService.dismissAll();
-      console.log(data)
-    }, error => {
-      this.errorMessage = error.error.error;
-    }
-  )
-  } 
-
+    this.airplanesService.deleteAirplane(this.selected).subscribe(
+      (data) => {
+        this.modalService.dismissAll();
+        this.refreshTable();
+      },
+      (error) => {
+        this.errorMessage = error.error.error;
+      }
+    );
+  }
 }

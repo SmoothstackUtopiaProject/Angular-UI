@@ -21,37 +21,34 @@
         </div>
 
     </div>
-    <table mdbTable #tableEl="mdbTable" id="tableSortExample" class="table table-responsive-md">
+    <table mdbTable #tableEl="mdbTable" class="table table-responsive-md">
 
         <thead>
             <tr>
                 <th class="th-sm">
                     <a (click)="sortBy('userId')">ID
-                        <mdb-icon fas icon="sort"></mdb-icon>
+                        ⇅
                     </a>
                 </th>
                 <th class="th-lg">
                     <a (click)="sortBy('userFirstName')">First Name
+                        ⇅
                     </a>
                 </th>
                 <th class="th-lg">
-                    <a (click)="sortBy('userLastName')">Last Name
-                        <mdb-icon fas icon="sort" class="ml-1"></mdb-icon>
+                    <a (click)="sortBy('userLastName')">Last Name ⇅
                     </a>
                 </th>
                 <th class="th-sm">
-                    <a (click)="sortBy('userEmail')">Email
-                        <mdb-icon fas icon="sort" class="ml-1"></mdb-icon>
+                    <a (click)="sortBy('userEmail')">Email ⇅
                     </a>
                 </th>
                 <th class="th-sm">
-                    <a (click)="sortBy('userPhone')">Phone
-                        <mdb-icon fas icon="sort" class="ml-1"></mdb-icon>
+                    <a (click)="sortBy('userPhone')">Phone ⇅
                     </a>
                 </th>
                 <th class="th-sm">
-                    <a (click)="sortBy('userRole')">Role
-                        <mdb-icon fas icon="sort" class="ml-1"></mdb-icon>
+                    <a (click)="sortBy('userRole')">Role ⇅
                     </a>
                 </th>
                 <th class="th-sm">

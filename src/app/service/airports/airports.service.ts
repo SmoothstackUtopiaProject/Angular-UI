@@ -22,8 +22,7 @@ export class AirportsService {
     return this.http.put<Airport>(environment.airportsEndpoint, airport)
   }
 
-  deleteAirport(airport: Airport){
-    console.log(environment.airportsEndpoint + "/" + airport.airportIataId);
+  deleteAirport(airport: Airport){ 
     return this.http.delete(environment.airportsEndpoint + "/" + airport.airportIataId)
   }
   
