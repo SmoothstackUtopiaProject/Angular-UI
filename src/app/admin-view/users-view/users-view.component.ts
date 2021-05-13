@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, HostListener, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ElementRef, HostListener, ViewChild} from '@angular/core';
 import { MdbTableDirective} from 'ng-uikit-pro-standard';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -18,7 +18,6 @@ export class UsersViewComponent implements OnInit{
 
   user!: User;
   userList: User[] =[];
-  headElements = ['ID', 'First', 'Last', 'Email', 'Phone', 'Role', 'Update', 'Delete', 'Password Recovery'];
   editFormUser!: FormGroup;
   createFormUser!: FormGroup;
   selected!: User;
@@ -47,7 +46,6 @@ export class UsersViewComponent implements OnInit{
   constructor(private userService: UsersService,
     private fb: FormBuilder,
     private modalService: NgbModal,
-    private cdRef: ChangeDetectorRef,
     private dashboard: DashboardComponent
     ) { }
 
@@ -108,8 +106,6 @@ returnToDashboard(){
   }
 
   sortBy(by: string | any): void {
-    console.log(this.userList)
-
     this.userList.sort((a: any, b: any) => {
       if (a[by] < b[by]) {
         return this.sorted ? 1 : -1;
@@ -163,7 +159,7 @@ returnToDashboard(){
         this.createFormUser.reset();
         this.refreshTable()
       }, error => {
-        this.errorMessage = error.error;
+        this.errorMessage = error.error.error;
       }
     )
   }
@@ -176,7 +172,7 @@ returnToDashboard(){
         this.editFormUser.reset();
         this.refreshTable()
       }, error => {
-        this.errorMessage = error.error;
+        this.errorMessage = error.error.error;
       }
     )
   }
@@ -188,7 +184,7 @@ returnToDashboard(){
         this.modalService.dismissAll();
         this.refreshTable()
       }, error => {
-        this.errorMessage = error.error;
+        this.errorMessage = error.error.error;
       })
   }
 
